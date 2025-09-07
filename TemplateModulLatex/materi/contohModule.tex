@@ -1,0 +1,430 @@
+
+\begin{center}
+    \addcontentsline{toc}{section}{Modul 2 Praktikum \matakuliah}
+    \textbf{Modul 2 Praktikum \matakuliah}
+
+    \textbf{Preprocessing Teks dan Tokenisasi}
+\end{center}
+
+\addcontentsline{toc}{subsection}{Deskripsi Materi}
+\section*{Deskripsi Singkat}
+Modul ini membahas tentang preprocessing teks dan tokenisasi sebagai langkah fundamental dalam sistem pencarian informasi. Preprocessing teks adalah proses membersihkan dan mempersiapkan data teks mentah agar dapat diproses lebih efektif oleh sistem IR.
+
+\addcontentsline{toc}{subsection}{Tujuan Praktikum}
+\section*{Tujuan}
+\begin{enumerate}
+    \item Memahami pentingnya preprocessing dalam sistem pencarian informasi
+    \item Dapat melakukan tokenisasi pada teks bahasa Indonesia dan Inggris
+    \item Dapat menerapkan case folding dan normalisasi teks
+    \item Dapat menghilangkan stopwords yang tidak relevan
+    \item Dapat menerapkan stemming untuk mengurangi variasi kata
+    \item Memahami dampak preprocessing terhadap kualitas pencarian
+\end{enumerate}
+
+\addcontentsline{toc}{subsection}{Materi 1 - Pengenalan Preprocessing Teks}
+\subsection*{Materi 1 - Pengenalan Preprocessing Teks}
+
+Preprocessing teks adalah tahap penting dalam sistem pencarian informasi yang bertujuan untuk:
+
+\textbf{Tujuan Preprocessing:}
+\begin{itemize}
+    \item \textbf{Mengurangi noise}: Menghilangkan karakter atau kata yang tidak relevan
+    \item \textbf{Standardisasi}: Menyeragamkan format teks
+    \item \textbf{Efisiensi}: Mengurangi ukuran data dan mempercepat pencarian
+    \item \textbf{Akurasi}: Meningkatkan ketepatan hasil pencarian
+\end{itemize}
+
+\textbf{Tahapan Preprocessing Teks:}
+\begin{enumerate}
+    \item \textbf{Case Folding}: Mengubah semua huruf menjadi huruf kecil
+    \item \textbf{Tokenisasi}: Memecah teks menjadi token (kata atau unit terkecil)
+    \item \textbf{Filtering}: Menghilangkan karakter khusus dan tanda baca
+    \item \textbf{Stopword Removal}: Menghilangkan kata-kata yang tidak bermakna
+    \item \textbf{Stemming/Lemmatization}: Mengubah kata ke bentuk dasarnya
+    \item \textbf{Normalisasi}: Menangani singkatan, angka, dan variasi penulisan
+\end{enumerate}
+
+\textbf{Contoh Sebelum dan Sesudah Preprocessing:}
+\begin{itemize}
+    \item \textbf{Sebelum}: "Saya SEDANG mencari-cari informasi tentang Universitas Syiah Kuala!!!"
+    \item \textbf{Sesudah}: ["cari", "informasi", "universitas", "syiah", "kuala"]
+\end{itemize}
+
+\addcontentsline{toc}{subsection}{Materi 2 - Tokenisasi dengan NLTK}
+\subsection*{Materi 2 - Tokenisasi dengan NLTK}
+
+Tokenisasi adalah proses memecah teks menjadi unit-unit yang lebih kecil seperti kata, frasa, atau kalimat. NLTK (Natural Language Toolkit) adalah library Python yang powerful untuk pemrosesan bahasa alami.
+
+\textbf{Instalasi Library:}
+\begin{lstlisting}[language=bash, style=bash]
+pip install nltk
+pip install Sastrawi
+\end{lstlisting}
+
+\textbf{Setup NLTK:}
+\begin{lstlisting}[language=python, style=python]
+import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
+import string
+import re
+
+# Download resource NLTK yang diperlukan
+nltk.download('punkt')
+nltk.download('stopwords')
+\end{lstlisting}
+
+\textbf{Tokenisasi Kalimat:}
+\begin{lstlisting}[language=python, style=python]
+# Contoh teks
+text = """Pencarian informasi adalah bidang yang menarik.
+Sistem IR membantu kita menemukan informasi yang relevan.
+Preprocessing adalah langkah penting dalam IR."""
+
+# Tokenisasi kalimat
+sentences = sent_tokenize(text)
+print("Tokenisasi Kalimat:")
+for i, sentence in enumerate(sentences, 1):
+    print(f"{i}. {sentence.strip()}")
+
+# Output:
+# 1. Pencarian informasi adalah bidang yang menarik.
+# 2. Sistem IR membantu kita menemukan informasi yang relevan.
+# 3. Preprocessing adalah langkah penting dalam IR.
+\end{lstlisting}
+
+\textbf{Tokenisasi Kata:}
+\begin{lstlisting}[language=python, style=python]
+# Tokenisasi kata
+text = "Sistem pencarian informasi modern menggunakan berbagai algoritma."
+words = word_tokenize(text)
+print("Tokenisasi Kata:")
+print(words)
+
+# Output:
+# ['Sistem', 'pencarian', 'informasi', 'modern', 'menggunakan', 'berbagai', 'algoritma', '.']
+\end{lstlisting}
+
+\addcontentsline{toc}{subsection}{Materi 3 - Case Folding dan Normalisasi}
+\subsection*{Materi 3 - Case Folding dan Normalisasi}
+
+Case folding adalah proses mengubah semua huruf dalam teks menjadi huruf kecil untuk menghindari perbedaan yang tidak perlu antara kata yang sama.
+
+\textbf{Case Folding Sederhana:}
+\begin{lstlisting}[language=python, style=python]
+def case_folding(text):
+    """Mengubah teks menjadi huruf kecil"""
+    return text.lower()
+
+# Contoh penggunaan
+text = "Universitas SYIAH KUALA adalah Universitas Terbaik"
+folded_text = case_folding(text)
+print("Sebelum:", text)
+print("Sesudah:", folded_text)
+
+# Output:
+# Sebelum: Universitas SYIAH KUALA adalah Universitas Terbaik
+# Sesudah: universitas syiah kuala adalah universitas terbaik
+\end{lstlisting}
+
+\textbf{Normalisasi Teks Lanjutan:}
+\begin{lstlisting}[language=python, style=python]
+def normalize_text(text):
+    """Normalisasi teks lengkap"""
+    # Case folding
+    text = text.lower()
+
+    # Hilangkan URL
+    text = re.sub(r'http\S+|www\S+|https\S+', '', text)
+
+    # Hilangkan email
+    text = re.sub(r'\S+@\S+', '', text)
+
+    # Hilangkan angka
+    text = re.sub(r'\d+', '', text)
+
+    # Hilangkan karakter khusus kecuali spasi
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
+
+    # Hilangkan spasi berlebih
+    text = re.sub(r'\s+', ' ', text).strip()
+
+    return text
+
+# Contoh penggunaan
+text = "Kunjungi website kami di https://unsyiah.ac.id atau email ke info@unsyiah.ac.id. Telp: 0651-123456"
+normalized = normalize_text(text)
+print("Sebelum:", text)
+print("Sesudah:", normalized)
+
+# Output:
+# Sebelum: Kunjungi website kami di https://unsyiah.ac.id atau email ke info@unsyiah.ac.id. Telp: 0651-123456
+# Sesudah: kunjungi website kami di atau email ke telp
+\end{lstlisting}
+
+\addcontentsline{toc}{subsection}{Materi 4 - Stopword Removal}
+\subsection*{Materi 4 - Stopword Removal}
+
+Stopwords adalah kata-kata yang sering muncul dalam teks tetapi tidak memberikan informasi yang bermakna untuk pencarian, seperti "dan", "atau", "yang", "adalah", "di", "ke", dll.
+
+\textbf{Menggunakan Stopwords NLTK:}
+\begin{lstlisting}[language=python, style=python]
+# Load stopwords bahasa Indonesia
+indonesian_stopwords = set(stopwords.words('indonesian'))
+print("Jumlah stopwords Indonesia:", len(indonesian_stopwords))
+print("Contoh stopwords:", list(indonesian_stopwords)[:10])
+
+# Load stopwords bahasa Inggris
+english_stopwords = set(stopwords.words('english'))
+print("Jumlah stopwords Inggris:", len(english_stopwords))
+print("Contoh stopwords:", list(english_stopwords)[:10])
+\end{lstlisting}
+
+\textbf{Implementasi Stopword Removal:}
+\begin{lstlisting}[language=python, style=python]
+def remove_stopwords(tokens, language='indonesian'):
+    """Menghilangkan stopwords dari list token"""
+    if language == 'indonesian':
+        stop_words = set(stopwords.words('indonesian'))
+    else:
+        stop_words = set(stopwords.words('english'))
+
+    # Filter token yang bukan stopwords
+    filtered_tokens = [token for token in tokens if token not in stop_words]
+    return filtered_tokens
+
+# Contoh penggunaan
+text = "sistem pencarian informasi adalah bidang yang menarik dan penting"
+tokens = word_tokenize(text.lower())
+print("Sebelum stopword removal:", tokens)
+
+filtered_tokens = remove_stopwords(tokens)
+print("Sesudah stopword removal:", filtered_tokens)
+
+# Output:
+# Sebelum: ['sistem', 'pencarian', 'informasi', 'adalah', 'bidang', 'yang', 'menarik', 'dan', 'penting']
+# Sesudah: ['sistem', 'pencarian', 'informasi', 'bidang', 'menarik', 'penting']
+\end{lstlisting}
+
+\textbf{Custom Stopwords:}
+\begin{lstlisting}[language=python, style=python]
+# Menambahkan stopwords custom
+def create_custom_stopwords():
+    """Membuat daftar stopwords custom"""
+    base_stopwords = set(stopwords.words('indonesian'))
+
+    # Tambahkan stopwords khusus domain
+    custom_words = {
+        'sistem', 'dapat', 'akan', 'telah', 'sudah',
+        'sangat', 'lebih', 'juga', 'hanya', 'saja'
+    }
+
+    all_stopwords = base_stopwords.union(custom_words)
+    return all_stopwords
+
+# Penggunaan
+custom_stopwords = create_custom_stopwords()
+tokens = ['sistem', 'pencarian', 'informasi', 'dapat', 'membantu', 'pengguna']
+filtered = [token for token in tokens if token not in custom_stopwords]
+print("Dengan custom stopwords:", filtered)
+\end{lstlisting}
+
+\addcontentsline{toc}{subsection}{Materi 5 - Stemming dengan Sastrawi}
+\subsection*{Materi 5 - Stemming dengan Sastrawi}
+
+Stemming adalah proses mengubah kata berimbuhan menjadi kata dasar. Untuk bahasa Indonesia, kita menggunakan library Sastrawi yang mengimplementasikan algoritma stemming khusus bahasa Indonesia.
+
+\textbf{Setup Sastrawi:}
+\begin{lstlisting}[language=python, style=python]
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+
+# Membuat stemmer
+factory = StemmerFactory()
+stemmer = factory.create_stemmer()
+
+# Contoh stemming sederhana
+words = ['pencarian', 'informasi', 'mencari', 'menemukan', 'relevan', 'pencari']
+print("Kata Asli -> Hasil Stemming")
+for word in words:
+    stemmed = stemmer.stem(word)
+    print(f"{word} -> {stemmed}")
+
+# Output:
+# pencarian -> cari
+# informasi -> informasi
+# mencari -> cari
+# menemukan -> temu
+# relevan -> relevan
+# pencari -> cari
+\end{lstlisting}
+
+\textbf{Implementasi Preprocessing Lengkap:}
+\begin{lstlisting}[language=python, style=python]
+class TextPreprocessor:
+    def __init__(self, language='indonesian'):
+        self.language = language
+        self.stemmer = StemmerFactory().create_stemmer()
+        self.stopwords = set(stopwords.words(language))
+
+    def preprocess(self, text):
+        """Preprocessing lengkap untuk satu teks"""
+        # 1. Normalisasi
+        text = self.normalize_text(text)
+
+        # 2. Tokenisasi
+        tokens = word_tokenize(text)
+
+        # 3. Filter token yang valid (hanya huruf, panjang > 2)
+        tokens = [token for token in tokens if token.isalpha() and len(token) > 2]
+
+        # 4. Stopword removal
+        tokens = [token for token in tokens if token not in self.stopwords]
+
+        # 5. Stemming
+        tokens = [self.stemmer.stem(token) for token in tokens]
+
+        return tokens
+
+    def normalize_text(self, text):
+        """Normalisasi teks"""
+        # Case folding
+        text = text.lower()
+
+        # Hilangkan URL, email, angka
+        text = re.sub(r'http\S+|www\S+|https\S+', '', text)
+        text = re.sub(r'\S+@\S+', '', text)
+        text = re.sub(r'\d+', '', text)
+
+        # Hilangkan tanda baca
+        text = re.sub(r'[^\w\s]', ' ', text)
+
+        # Hilangkan spasi berlebih
+        text = re.sub(r'\s+', ' ', text).strip()
+
+        return text
+
+    def preprocess_documents(self, documents):
+        """Preprocessing untuk multiple dokumen"""
+        return [self.preprocess(doc) for doc in documents]
+
+# Contoh penggunaan
+preprocessor = TextPreprocessor()
+
+documents = [
+    "Sistem pencarian informasi modern menggunakan berbagai teknik untuk meningkatkan relevansi hasil pencarian.",
+    "Preprocessing teks adalah langkah penting dalam membangun sistem IR yang efektif dan akurat.",
+    "Tokenisasi dan stemming membantu mengurangi variasi kata dalam dokumen sehingga pencarian lebih efisien."
+]
+
+processed_docs = preprocessor.preprocess_documents(documents)
+for i, doc in enumerate(processed_docs, 1):
+    print(f"Dokumen {i}: {doc}")
+\end{lstlisting}
+
+\addcontentsline{toc}{subsection}{Latihan}
+\subsection*{Latihan}
+
+\textbf{Latihan 1: Preprocessing Teks Sederhana}
+
+Lakukan preprocessing pada teks berikut dan analisis hasilnya:
+
+\begin{lstlisting}[language=python, style=python]
+# Teks untuk diproses
+sample_text = """
+Universitas Syiah Kuala (UNSYIAH) adalah universitas negeri yang terletak di Banda Aceh, Aceh.
+Universitas ini didirikan pada tahun 1961 dan merupakan universitas tertua di Aceh.
+UNSYIAH memiliki berbagai fakultas seperti Fakultas Teknik, FMIPA, dan Fakultas Kedokteran.
+Website: https://unsyiah.ac.id, Email: info@unsyiah.ac.id
+"""
+
+# TODO: Implementasikan preprocessing
+# 1. Normalisasi teks
+# 2. Tokenisasi
+# 3. Hilangkan stopwords
+# 4. Lakukan stemming
+# 5. Hitung frekuensi kata
+
+# Solusi:
+from collections import Counter
+
+preprocessor = TextPreprocessor()
+processed_tokens = preprocessor.preprocess(sample_text)
+
+print("Hasil preprocessing:")
+print(processed_tokens)
+
+# Hitung frekuensi kata
+word_freq = Counter(processed_tokens)
+print("\n5 kata paling sering muncul:")
+for word, freq in word_freq.most_common(5):
+    print(f"{word}: {freq}")
+\end{lstlisting}
+
+\textbf{Latihan 2: Perbandingan Sebelum dan Sesudah Preprocessing}
+
+\begin{lstlisting}[language=python, style=python]
+# Bandingkan ukuran vocabulary sebelum dan sesudah preprocessing
+original_text = """
+Sistem pencarian informasi membantu pengguna dalam mencari dan menemukan informasi yang relevan.
+Pencarian informasi melibatkan berbagai teknik seperti indexing, ranking, dan retrieval.
+Preprocessing teks adalah langkah penting untuk meningkatkan kualitas pencarian informasi.
+"""
+
+# Sebelum preprocessing
+original_tokens = word_tokenize(original_text.lower())
+original_vocab = set([token for token in original_tokens if token.isalpha()])
+
+# Sesudah preprocessing
+preprocessor = TextPreprocessor()
+processed_tokens = preprocessor.preprocess(original_text)
+processed_vocab = set(processed_tokens)
+
+print(f"Vocabulary sebelum preprocessing: {len(original_vocab)} kata unik")
+print(f"Vocabulary sesudah preprocessing: {len(processed_vocab)} kata unik")
+print(f"Pengurangan: {len(original_vocab) - len(processed_vocab)} kata")
+print(f"Persentase pengurangan: {((len(original_vocab) - len(processed_vocab)) / len(original_vocab)) * 100:.1f}%")
+
+print("\nKata-kata yang dihilangkan:")
+removed_words = original_vocab - processed_vocab
+print(sorted(list(removed_words)))
+\end{lstlisting}
+
+\textbf{Latihan 3: Analisis Dampak Preprocessing}
+
+\begin{lstlisting}[language=python, style=python]
+# Analisis dampak setiap tahap preprocessing
+def analyze_preprocessing_steps(text):
+    """Analisis setiap tahap preprocessing"""
+    print("=== ANALISIS TAHAP PREPROCESSING ===")
+    print(f"Teks asli: {text}")
+    print(f"Panjang teks asli: {len(text)} karakter")
+
+    # Tahap 1: Normalisasi
+    normalized = preprocessor.normalize_text(text)
+    print(f"\n1. Setelah normalisasi: {normalized}")
+    print(f"   Panjang: {len(normalized)} karakter")
+
+    # Tahap 2: Tokenisasi
+    tokens = word_tokenize(normalized)
+    print(f"\n2. Setelah tokenisasi: {tokens}")
+    print(f"   Jumlah token: {len(tokens)}")
+
+    # Tahap 3: Filter token valid
+    valid_tokens = [token for token in tokens if token.isalpha() and len(token) > 2]
+    print(f"\n3. Setelah filter token: {valid_tokens}")
+    print(f"   Jumlah token valid: {len(valid_tokens)}")
+
+    # Tahap 4: Stopword removal
+    filtered_tokens = [token for token in valid_tokens if token not in preprocessor.stopwords]
+    print(f"\n4. Setelah stopword removal: {filtered_tokens}")
+    print(f"   Jumlah token tersisa: {len(filtered_tokens)}")
+
+    # Tahap 5: Stemming
+    stemmed_tokens = [preprocessor.stemmer.stem(token) for token in filtered_tokens]
+    print(f"\n5. Setelah stemming: {stemmed_tokens}")
+    print(f"   Jumlah token final: {len(stemmed_tokens)}")
+
+# Contoh penggunaan
+test_text = "Pencarian informasi adalah proses mencari dan menemukan informasi yang relevan dari kumpulan dokumen."
+analyze_preprocessing_steps(test_text)
+\end{lstlisting}

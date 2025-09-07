@@ -1,0 +1,2038 @@
+\begin{center}
+\textbf{Modul Praktikum Pemrograman Python} \\
+\textbf{Dasar-Dasar Python untuk Data Science: Numpy, Pandas, Matplotlib, dan Seaborn}
+\end{center}
+
+\section*{Deskripsi}
+Pada modul ini dibahas library fundamental Python yang wajib dikuasai untuk data science:
+\begin{itemize}
+  \item Alasan dominasi Python dalam data science dibanding bahasa lain.
+  \item Numpy untuk komputasi numerik dan operasi array multidimensional.
+  \item Pandas untuk manipulasi data terstruktur dan analisis data tabular.
+  \item Matplotlib untuk visualisasi data dasar dan plotting.
+  \item Seaborn untuk visualisasi statistik tingkat lanjut dan statistical plotting.
+\end{itemize}
+
+\section*{Tujuan}
+Setelah mengikuti modul ini mahasiswa diharapkan:
+\begin{itemize}
+  \item Memahami mengapa Python menjadi standar industri untuk data science.
+  \item Menguasai operasi fundamental Numpy untuk array dan komputasi numerik.
+  \item Mampu memanipulasi dan menganalisis data menggunakan Pandas DataFrame dan Series.
+  \item Dapat membuat berbagai jenis visualisasi menggunakan Matplotlib dan Seaborn.
+  \item Memahami integrasi antar library untuk workflow data science yang lengkap.
+\end{itemize}
+
+\section{Mengapa Python Dominan dalam Data Science?}
+
+Python telah menjadi bahasa utama untuk data science karena kombinasi faktor teknis, ekosistem yang matang, dan adoption yang luas di industri.
+
+\subsection*{Perbandingan dengan Bahasa Lain}
+
+\textbf{Python vs Java:}
+\begin{itemize}
+  \item Python memiliki sintaks yang lebih sederhana dan ringkas
+  \item Java memerlukan lebih banyak boilerplate code untuk tugas sederhana
+  \item Python mendukung interactive development dan rapid prototyping
+  \item Java lebih verbose dalam struktur object-oriented yang rigid
+\end{itemize}
+
+\textbf{Python vs R:}
+\begin{itemize}
+  \item Python adalah bahasa general-purpose, R dirancang khusus untuk statistik
+  \item Python memiliki ekosistem library yang lebih luas untuk berbagai domain
+  \item R terbatas untuk deployment aplikasi production dan web services
+  \item Python lebih mudah diintegrasikan dengan sistem enterprise dan database
+\end{itemize}
+
+\textbf{Python vs C++:}
+\begin{itemize}
+  \item Python lebih mudah dipelajari dengan learning curve yang gentle
+  \item C++ memiliki performa tinggi tetapi development time lebih lama
+  \item Python memiliki automatic memory management (garbage collection)
+  \item C++ memerlukan manual memory management yang error-prone
+\end{itemize}
+
+\textbf{Python vs MATLAB:}
+\begin{itemize}
+  \item Python adalah open-source dan free, MATLAB proprietary dan expensive
+  \item Python memiliki komunitas global yang besar dan aktif
+  \item Python dapat digunakan untuk production deployment, MATLAB terbatas
+  \item Python lebih fleksibel untuk integrasi dengan teknologi modern
+\end{itemize}
+
+\subsection*{Keunggulan Python untuk Data Science}
+\begin{enumerate}
+  \item \textbf{Readable syntax}: Kode mendekati bahasa natural dan mudah dipahami
+  \item \textbf{Rich ecosystem}: Library khusus data science yang komprehensif dan matang
+  \item \textbf{Large community}: Dokumentasi lengkap, tutorial, dan forum support yang aktif
+  \item \textbf{Versatility}: Satu bahasa untuk web development, automation, AI/ML, dan data science
+  \item \textbf{Industry adoption}: Standard di perusahaan tech besar (Google, Netflix, Uber, Facebook)
+  \item \textbf{Integration capability}: Mudah diintegrasikan dengan database, web API, dan cloud services
+  \item \textbf{Performance}: Library core ditulis dalam C untuk operasi critical path
+\end{enumerate}
+
+\section{Numpy — Numerical Python}
+
+Numpy adalah library fundamental untuk komputasi numerik di Python. Library ini menyediakan struktur data array multidimensional dan fungsi-fungsi untuk operasi matematika yang efisien.
+
+\subsection*{Konsep Fundamental}
+Numpy menggunakan array homogeneous (semua element tipe data sama) yang disimpan dalam memory secara contiguous. Hal ini memungkinkan operasi vectorized yang jauh lebih cepat dibanding loop Python biasa.
+
+\textbf{Keunggulan Numpy:}
+\begin{itemize}
+  \item Performa 50-100x lebih cepat dibanding list Python standard
+  \item Memory efficient untuk dataset besar
+  \item Mendukung broadcasting untuk operasi array dengan shape berbeda
+  \item Menjadi foundation untuk Pandas, Matplotlib, Scikit-learn
+\end{itemize}
+
+\subsection*{Array vs List Python}
+
+\begin{lstlisting}[language=python, caption={Perbedaan List Python dan Numpy Array}, style=python]
+# List Python standard
+python_list = [1, 2, 3, 4, 5]
+# python_list: struktur data list bawaan Python, heterogeneous dan dynamic
+print("Type:", type(python_list))
+# type(): function built-in untuk mengecek tipe data object
+print("List:", python_list)
+
+# Numpy Array
+import numpy as np
+# import numpy as np: import library numpy dengan alias np untuk efisiensi penulisan
+numpy_array = np.array([1, 2, 3, 4, 5])
+# np.array(): constructor untuk membuat numpy array dari sequence
+# Parameter: sequence (list, tuple, dll) yang akan dikonversi
+# Return: numpy.ndarray object yang homogeneous dan fixed-size
+print("Type:", type(numpy_array))
+print("Array:", numpy_array)
+print("Data type:", numpy_array.dtype)
+# .dtype: attribute yang menunjukkan tipe data elements dalam array
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Type: <class 'list'>
+List: [1, 2, 3, 4, 5]
+Type: <class 'numpy.ndarray'>
+Array: [1 2 3 4 5]
+Data type: int64
+\end{lstlisting}
+
+\subsection*{Membuat Array Numpy}
+
+\begin{lstlisting}[language=python, caption={Berbagai Cara Membuat Array}, style=python]
+import numpy as np
+
+# Array 1D dari list
+arr1d = np.array([1, 2, 3, 4, 5])
+# np.array(): konversi sequence ke numpy array
+print("Array 1D:", arr1d)
+print("Shape:", arr1d.shape)
+# .shape: attribute tuple yang menunjukkan dimensi array (length,)
+print("Dimensi:", arr1d.ndim)
+# .ndim: attribute yang menunjukkan jumlah dimensi array
+
+# Array 2D dari nested list
+arr2d = np.array([[1, 2, 3], [4, 5, 6]])
+# nested list: setiap sub-list menjadi satu row dalam array 2D
+print("Array 2D:")
+print(arr2d)
+print("Shape:", arr2d.shape)  # (rows, columns)
+
+# Array berisi nol
+zeros_array = np.zeros((3, 4))
+# np.zeros(shape): membuat array berisi 0
+# shape: tuple menentukan dimensi (3 rows, 4 columns)
+# dtype default: float64
+print("Array Zeros:")
+print(zeros_array)
+
+# Array berisi satu
+ones_array = np.ones((2, 3))
+# np.ones(shape): membuat array berisi 1 dengan shape tertentu
+print("Array Ones:")
+print(ones_array)
+
+# Array dengan nilai konstanta
+full_array = np.full((2, 2), 7)
+# np.full(shape, fill_value): array berisi nilai yang ditentukan
+# Parameter 1: shape array yang diinginkan
+# Parameter 2: nilai yang akan mengisi seluruh array
+print("Array Full (value=7):")
+print(full_array)
+
+# Identity matrix
+identity = np.eye(3)
+# np.eye(N): membuat identity matrix N x N
+# Identity matrix: diagonal utama=1, element lainnya=0
+print("Identity matrix:")
+print(identity)
+
+# Sequence numbers dengan arange
+arange_array = np.arange(0, 10, 2)
+# np.arange(start, stop, step): sequence dengan interval teratur
+# start: nilai awal (inclusive)
+# stop: nilai akhir (exclusive)
+# step: langkah increment
+print("Arange (0 to 10, step 2):", arange_array)
+
+# Sequence dengan linspace
+linspace_array = np.linspace(0, 1, 5)
+# np.linspace(start, stop, num): sequence dengan jarak merata
+# start: nilai awal (inclusive)
+# stop: nilai akhir (inclusive)
+# num: jumlah points yang diinginkan
+print("Linspace (0 to 1, 5 points):", linspace_array)
+
+# Random arrays
+random_array = np.random.random((2, 3))
+# np.random.random(shape): array random dengan uniform distribution [0.0, 1.0)
+print("Random array:")
+print(random_array)
+
+random_int = np.random.randint(1, 10, (2, 3))
+# np.random.randint(low, high, size): integer random
+# low: nilai minimum (inclusive)
+# high: nilai maximum (exclusive)
+# size: shape array yang diinginkan
+print("Random integers:")
+print(random_int)
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Array 1D: [1 2 3 4 5]
+Shape: (5,)
+Dimensi: 1
+Array 2D:
+[[1 2 3]
+ [4 5 6]]
+Shape: (2, 3)
+Dimensi: 2
+Array Zeros:
+[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+Array Ones:
+[[1. 1. 1.]
+ [1. 1. 1.]]
+Array Full (value=7):
+[[7 7]
+ [7 7]]
+Identity matrix:
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+Arange (0 to 10, step 2): [0 2 4 6 8]
+Linspace (0 to 1, 5 points): [0.   0.25 0.5  0.75 1.  ]
+\end{lstlisting}
+
+\subsection*{Operasi Matematika Array}
+
+\begin{lstlisting}[language=python, caption={Operasi Element-wise dan Broadcasting}, style=python]
+# Array untuk contoh operasi
+a = np.array([1, 2, 3, 4])
+b = np.array([5, 6, 7, 8])
+print("Array a:", a)
+print("Array b:", b)
+
+# Operasi element-wise (operasi per element)
+print("Penjumlahan a + b:", a + b)
+# a + b: penjumlahan element-wise (a[i] + b[i] untuk setiap i)
+# Vectorized operation: operasi dilakukan parallel pada semua element
+print("Pengurangan a - b:", a - b)
+# a - b: pengurangan element-wise
+print("Perkalian a * b:", a * b)
+# a * b: perkalian element-wise (BUKAN matrix multiplication)
+print("Pembagian a / b:", a / b)
+# a / b: pembagian element-wise, hasil float
+print("Pangkat a ** 2:", a ** 2)
+# ** : operator pangkat element-wise
+
+# Operasi dengan scalar (broadcasting)
+print("a + 10:", a + 10)
+# broadcasting: scalar 10 ditambahkan ke setiap element array
+# Python secara otomatis "broadcast" scalar ke shape yang cocok
+print("a * 3:", a * 3)
+# scalar multiplication: setiap element dikalikan 3
+
+# Fungsi matematika universal (ufunc)
+print("Square root:", np.sqrt(a))
+# np.sqrt(): menghitung akar kuadrat setiap element
+# ufunc: universal function yang bekerja element-wise
+print("Exponential:", np.exp(a))
+# np.exp(): menghitung e^x untuk setiap element
+print("Logarithm:", np.log(a))
+# np.log(): natural logarithm (ln) setiap element
+print("Sine:", np.sin(a))
+# np.sin(): sinus dalam radian untuk setiap element
+print("Absolute:", np.abs(np.array([-1, -2, 3, -4])))
+# np.abs(): nilai absolute (|x|) setiap element
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Array a: [1 2 3 4]
+Array b: [5 6 7 8]
+Penjumlahan a + b: [ 6  8 10 12]
+Pengurangan a - b: [-4 -4 -4 -4]
+Perkalian a * b: [ 5 12 21 32]
+Pembagian a / b: [0.2        0.33333333 0.42857143 0.5       ]
+Pangkat a ** 2: [ 1  4  9 16]
+a + 10: [11 12 13 14]
+a * 3: [ 3  6  9 12]
+Square root: [1.         1.41421356 1.73205081 2.        ]
+Exponential: [ 2.71828183  7.3890561  20.08553692 54.59815003]
+\end{lstlisting}
+
+\subsection*{Indexing dan Slicing}
+
+\begin{lstlisting}[language=python, caption={Teknik Akses Data Array}, style=python]
+# Array 1D untuk contoh indexing
+arr = np.array([10, 20, 30, 40, 50, 60])
+print("Array:", arr)
+
+# Basic indexing (0-based indexing)
+print("Element pertama (index 0):", arr[0])
+# arr[0]: akses element pada posisi index 0
+print("Element terakhir (index -1):", arr[-1])
+# arr[-1]: negative indexing, -1 = element terakhir, -2 = kedua dari belakang
+print("Element kedua dari belakang:", arr[-2])
+
+# Slicing (mengambil subset array)
+print("3 element pertama (0:3):", arr[:3])
+# arr[:3]: slice dari awal sampai index 3 (exclusive)
+# Format: [start:stop] dimana stop tidak termasuk
+print("Element 2-4 (index 2:5):", arr[2:5])
+# arr[2:5]: slice dari index 2 sampai 4 (index 5 exclusive)
+print("Setiap element ke-2:", arr[::2])
+# arr[::2]: slice dengan step=2, format [start:stop:step]
+print("Array terbalik:", arr[::-1])
+# arr[::-1]: step negatif untuk membalik urutan array
+
+# Boolean indexing (filtering)
+condition = arr > 30
+# arr > 30: membuat boolean array berdasarkan kondisi
+print("Kondisi arr > 30:", condition)
+print("Element > 30:", arr[condition])
+# arr[condition]: boolean indexing, ambil element dimana condition=True
+print("Element > 30 (direct):", arr[arr > 30])
+# cara langsung tanpa variable terpisah
+
+# Fancy indexing (advanced indexing)
+indices = [0, 2, 4]
+# indices: list berisi index yang ingin diakses
+print("Element di index [0,2,4]:", arr[indices])
+# arr[indices]: akses multiple element berdasarkan list index
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Array: [10 20 30 40 50 60]
+Element pertama (index 0): 10
+Element terakhir (index -1): 60
+Element kedua dari belakang: 50
+3 element pertama (0:3): [10 20 30]
+Element 2-4 (index 2:5): [30 40 50]
+Setiap element ke-2: [10 30 50]
+Array terbalik: [60 50 40 30 20 10]
+Kondisi arr > 30: [False False False  True  True  True]
+Element > 30: [40 50 60]
+Element > 30 (direct): [40 50 60]
+Element di index [0,2,4]: [10 30 50]
+\end{lstlisting}
+
+\subsection*{Array 2D Indexing}
+
+\begin{lstlisting}[language=python, caption={Indexing Array Multidimensional}, style=python]
+# Array 2D untuk contoh
+arr2d = np.array([[1, 2, 3, 4],
+                  [5, 6, 7, 8],
+                  [9, 10, 11, 12]])
+print("Array 2D:")
+print(arr2d)
+
+# Basic 2D indexing [row, column]
+print("Element baris 0, kolom 1:", arr2d[0, 1])
+# arr2d[0, 1]: akses element pada row 0, column 1
+print("Element baris 2, kolom 3:", arr2d[2, 3])
+
+# Slicing rows dan columns
+print("Baris pertama (semua kolom):", arr2d[0, :])
+# arr2d[0, :]: row 0, semua kolom (: = slice semua)
+print("Kolom terakhir (semua baris):", arr2d[:, -1])
+# arr2d[:, -1]: semua row, kolom terakhir
+print("Sub-array [baris 0-1, kolom 1-2]:")
+print(arr2d[0:2, 1:3])
+# arr2d[0:2, 1:3]: slice rows 0-1, columns 1-2
+
+# Boolean indexing 2D
+print("Elements > 7:")
+print(arr2d[arr2d > 7])
+# arr2d[arr2d > 7]: filtering semua element yang > 7
+# Return: 1D array berisi element yang memenuhi kondisi
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Array 2D:
+[[ 1  2  3  4]
+ [ 5  6  7  8]
+ [ 9 10 11 12]]
+Element baris 0, kolom 1: 2
+Element baris 2, kolom 3: 12
+Baris pertama (semua kolom): [1 2 3 4]
+Kolom terakhir (semua baris): [ 4  8 12]
+Sub-array [baris 0-1, kolom 1-2]:
+[[2 3]
+ [6 7]]
+Elements > 7: [ 8  9 10 11 12]
+\end{lstlisting}
+
+\subsection*{Fungsi Statistik dan Agregasi}
+
+\begin{lstlisting}[language=python, caption={Statistical Functions pada Array}, style=python]
+data = np.array([10, 20, 30, 40, 50, 60, 70])
+print("Data:", data)
+
+# Statistik dasar
+print("Mean (rata-rata):", np.mean(data))
+# np.mean(): menghitung arithmetic mean dari semua element
+print("Median (nilai tengah):", np.median(data))
+# np.median(): nilai tengah setelah data diurutkan
+print("Standard deviation:", np.std(data))
+# np.std(): mengukur penyebaran data dari rata-rata
+print("Variance:", np.var(data))
+# np.var(): variance = (standard_deviation)^2
+print("Minimum:", np.min(data))
+# np.min(): nilai terkecil dalam array
+print("Maximum:", np.max(data))
+# np.max(): nilai terbesar dalam array
+print("Sum total:", np.sum(data))
+# np.sum(): penjumlahan semua element
+print("Product total:", np.prod(data))
+# np.prod(): perkalian semua element
+
+# Index dari nilai min/max
+print("Index minimum:", np.argmin(data))
+# np.argmin(): return index dari nilai minimum
+print("Index maximum:", np.argmax(data))
+# np.argmax(): return index dari nilai maximum
+
+# Percentiles
+print("25th percentile:", np.percentile(data, 25))
+# np.percentile(data, q): nilai pada percentile ke-q
+# q=25: 25% data berada di bawah nilai ini
+print("75th percentile:", np.percentile(data, 75))
+
+# Statistik array 2D dengan axis
+arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print("\nArray 2D:")
+print(arr2d)
+print("Mean semua element:", np.mean(arr2d))
+print("Mean per baris (axis=1):", np.mean(arr2d, axis=1))
+# axis=1: operasi sepanjang kolom, hasil per baris
+print("Mean per kolom (axis=0):", np.mean(arr2d, axis=0))
+# axis=0: operasi sepanjang baris, hasil per kolom
+print("Sum per baris:", np.sum(arr2d, axis=1))
+print("Sum per kolom:", np.sum(arr2d, axis=0))
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Data: [10 20 30 40 50 60 70]
+Mean (rata-rata): 40.0
+Median (nilai tengah): 40.0
+Standard deviation: 20.0
+Variance: 400.0
+Minimum: 10
+Maximum: 70
+Sum total: 280
+Product total: 1680000000
+Index minimum: 0
+Index maximum: 6
+25th percentile: 25.0
+75th percentile: 55.0
+
+Array 2D:
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+Mean semua element: 5.0
+Mean per baris (axis=1): [2. 5. 8.]
+Mean per kolom (axis=0): [4. 5. 6.]
+Sum per baris: [ 6 15 24]
+Sum per kolom: [12 15 18]
+\end{lstlisting}
+
+\subsection*{Array Manipulation}
+
+\begin{lstlisting}[language=python, caption={Manipulasi Bentuk dan Struktur Array}, style=python]
+# Reshape - mengubah bentuk array
+arr = np.arange(12)
+# np.arange(12): membuat array [0, 1, 2, ..., 11]
+print("Original array:", arr)
+print("Reshape to 3x4:")
+print(arr.reshape(3, 4))
+# .reshape(rows, cols): ubah array 1D menjadi 2D
+# Total element harus sama: 12 = 3*4
+print("Reshape to 2x6:")
+print(arr.reshape(2, 6))
+
+# Flatten - mengubah ke 1D
+arr2d = np.array([[1, 2, 3], [4, 5, 6]])
+print("Original 2D:")
+print(arr2d)
+print("Flattened:", arr2d.flatten())
+# .flatten(): ubah array multidimensional menjadi 1D
+# Return: copy baru dalam bentuk 1D
+
+# Transpose
+print("Transposed:")
+print(arr2d.T)
+# .T: transpose array (tukar baris dan kolom)
+# Return: view dengan dimensi yang ditukar
+
+# Concatenate arrays
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([4, 5, 6])
+print("Concatenate:", np.concatenate([arr1, arr2]))
+# np.concatenate(): gabung arrays menjadi satu
+# Parameter: sequence of arrays
+
+# Concatenate 2D arrays
+arr2d_1 = np.array([[1, 2], [3, 4]])
+arr2d_2 = np.array([[5, 6], [7, 8]])
+print("Concatenate vertical (axis=0):")
+print(np.concatenate([arr2d_1, arr2d_2], axis=0))
+# axis=0: gabung sepanjang baris (tambah baris baru)
+print("Concatenate horizontal (axis=1):")
+print(np.concatenate([arr2d_1, arr2d_2], axis=1))
+# axis=1: gabung sepanjang kolom (tambah kolom baru)
+
+# Split arrays
+arr = np.arange(10)
+print("Array to split:", arr)
+split_arrays = np.split(arr, 5)
+# np.split(array, sections): bagi array menjadi bagian sama besar
+# sections=5: bagi menjadi 5 sub-arrays
+print("Split into 5 parts:", [sub_arr.tolist() for sub_arr in split_arrays])
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Original array: [ 0  1  2  3  4  5  6  7  8  9 10 11]
+Reshape to 3x4:
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+Reshape to 2x6:
+[[ 0  1  2  3  4  5]
+ [ 6  7  8  9 10 11]]
+Original 2D:
+[[1 2 3]
+ [4 5 6]]
+Flattened: [1 2 3 4 5 6]
+Transposed:
+[[1 4]
+ [2 5]
+ [3 6]]
+Concatenate: [1 2 3 4 5 6]
+Concatenate vertical (axis=0):
+[[1 2]
+ [3 4]
+ [5 6]
+ [7 8]]
+Concatenate horizontal (axis=1):
+[[1 2 5 6]
+ [3 4 7 8]]
+\end{lstlisting}
+
+\section{Pandas — Panel Data}
+
+Pandas adalah library untuk manipulasi dan analisis data yang menyediakan struktur data dan tools untuk bekerja dengan data terstruktur. Pandas memungkinkan kita bekerja dengan data tabular (seperti CSV, Excel) dengan mudah.
+
+\subsection*{Komponen Utama Pandas}
+\begin{itemize}
+  \item \textbf{Series}: Struktur data 1D labeled (seperti satu kolom Excel)
+  \item \textbf{DataFrame}: Struktur data 2D labeled (seperti spreadsheet lengkap)
+\end{itemize}
+
+\subsection*{Pandas Series}
+
+Series adalah struktur data 1D yang dapat menyimpan data berbagai tipe dengan label index.
+
+\begin{lstlisting}[language=python, caption={Membuat dan Menggunakan Series}, style=python]
+import pandas as pd
+# import pandas as pd: import library pandas dengan alias pd
+import numpy as np
+
+# Series dari list dengan default index
+series1 = pd.Series([10, 20, 30, 40, 50])
+# pd.Series(data): constructor untuk membuat Series
+# Parameter: data sequence (list, array, dict)
+# Default index: RangeIndex mulai dari 0
+print("Series dari list:")
+print(series1)
+print("Type:", type(series1))
+print("Index:", series1.index)
+# .index: Index object yang berisi labels
+print("Values:", series1.values)
+# .values: numpy array berisi nilai dalam Series
+
+# Series dengan custom index
+grades = pd.Series([85, 90, 78, 92, 88],
+                   index=['Math', 'Physics', 'Chemistry', 'Biology', 'English'])
+# index parameter: custom labels untuk setiap element
+print("\nSeries dengan custom index:")
+print(grades)
+print("Data type:", grades.dtype)
+# .dtype: tipe data values dalam Series
+
+# Akses data by label
+print("Nilai Math:", grades['Math'])
+# grades['label']: akses value menggunakan index label
+print("Nilai Physics:", grades['Physics'])
+
+# Akses multiple values
+subjects = ['Math', 'Biology']
+print("Nilai Math dan Biology:")
+print(grades[subjects])
+# grades[list_labels]: akses multiple values dengan list labels
+
+# Akses by position (iloc)
+print("Nilai pertama:", grades.iloc[0])
+# .iloc[position]: akses berdasarkan integer position
+print("3 nilai pertama:")
+print(grades.iloc[:3])
+# .iloc[slice]: slicing berdasarkan position
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Series dari list:
+0    10
+1    20
+2    30
+3    40
+4    50
+dtype: int64
+Type: <class 'pandas.core.series.Series'>
+Index: RangeIndex(start=0, stop=5, step=1)
+Values: [10 20 30 40 50]
+
+Series dengan custom index:
+Math         85
+Physics      90
+Chemistry    78
+Biology      92
+English      88
+dtype: int64
+Nilai Math: 85
+Nilai Physics: 90
+Nilai Math dan Biology:
+Math       85
+Biology    92
+dtype: int64
+\end{lstlisting}
+
+\subsection*{Operasi pada Series}
+
+\begin{lstlisting}[language=python, caption={Mathematical dan Statistical Operations}, style=python]
+# Operasi matematika (broadcasting)
+print("Grades + 5:")
+print(grades + 5)
+# grades + 5: tambah scalar 5 ke setiap nilai (broadcasting)
+
+print("Grades * 1.1 (bonus 10%):")
+print(grades * 1.1)
+# grades * 1.1: kalikan setiap nilai dengan 1.1
+
+# Boolean indexing untuk filtering
+print("Subjects dengan nilai > 85:")
+print(grades[grades > 85])
+# grades > 85: buat boolean Series
+# grades[boolean_series]: filter values dimana kondisi True
+
+# Statistical methods
+print("Mean:", grades.mean())
+# .mean(): rata-rata aritmatika semua values
+print("Median:", grades.median())
+# .median(): nilai tengah setelah diurutkan
+print("Standard deviation:", grades.std())
+# .std(): standard deviation (sample std dengan ddof=1)
+print("Max:", grades.max())
+# .max(): nilai maximum
+print("Min:", grades.min())
+# .min(): nilai minimum
+
+# Information methods
+print("Shape:", grades.shape)
+# .shape: tuple berisi dimensi Series (length,)
+print("Size:", grades.size)
+# .size: jumlah element dalam Series
+print("Unique values count:", grades.nunique())
+# .nunique(): jumlah nilai unik dalam Series
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Grades + 5:
+Math         90
+Physics      95
+Chemistry    83
+Biology      97
+English      93
+dtype: int64
+
+Subjects dengan nilai > 85:
+Physics    90
+Biology    92
+English    88
+dtype: int64
+Mean: 86.6
+Median: 88.0
+Max: 92
+Min: 78
+Shape: (5,)
+Size: 5
+\end{lstlisting}
+
+\subsection*{Pandas DataFrame}
+
+DataFrame adalah struktur data 2D dengan labeled axes (rows dan columns). Dapat dipandang sebagai dictionary of Series atau spreadsheet yang programmable.
+
+\begin{lstlisting}[language=python, caption={Membuat dan Eksplorasi DataFrame}, style=python]
+# Membuat DataFrame dari dictionary
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
+    'Age': [25, 30, 35, 28, 32],
+    'City': ['New York', 'London', 'Tokyo', 'Paris', 'Berlin'],
+    'Salary': [50000, 60000, 70000, 55000, 65000],
+    'Department': ['IT', 'Finance', 'IT', 'Marketing', 'Finance']
+}
+# data: dictionary dimana keys = column names, values = column data
+
+df = pd.DataFrame(data)
+# pd.DataFrame(data): constructor DataFrame dari dictionary
+# Parameter: dict, list of dicts, numpy array, dll
+print("DataFrame:")
+print(df)
+
+# Basic information
+print("\nShape (rows, columns):", df.shape)
+# .shape: tuple (num_rows, num_columns)
+print("Size (total elements):", df.size)
+# .size: total jumlah cells (rows * columns)
+print("Columns:", df.columns.tolist())
+# .columns: Index object berisi column names
+# .tolist(): konversi Index ke Python list
+print("Index:", df.index.tolist())
+# .index: RangeIndex untuk default numeric index
+print("Data types:")
+print(df.dtypes)
+# .dtypes: Series berisi data type setiap kolom
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+DataFrame:
+      Name  Age      City  Salary Department
+0    Alice   25  New York   50000         IT
+1      Bob   30    London   60000    Finance
+2  Charlie   35     Tokyo   70000         IT
+3    Diana   28     Paris   55000  Marketing
+4      Eve   32    Berlin   65000    Finance
+
+Shape (rows, columns): (5, 5)
+Size (total elements): 25
+Columns: ['Name', 'Age', 'City', 'Salary', 'Department']
+Data types:
+Name          object
+Age            int64
+City          object
+Salary         int64
+Department    object
+dtype: object
+\end{lstlisting}
+
+\subsection*{Informasi dan Preview DataFrame}
+
+\begin{lstlisting}[language=python, caption={Methods untuk Eksplorasi Data}, style=python]
+# Preview methods
+print("5 baris pertama:")
+print(df.head())
+# .head(n=5): tampilkan n baris pertama (default n=5)
+
+print("\n3 baris pertama:")
+print(df.head(3))
+# .head(3): tampilkan 3 baris pertama
+
+print("\n2 baris terakhir:")
+print(df.tail(2))
+# .tail(n): tampilkan n baris terakhir
+
+# Info method untuk overview lengkap
+print("\nInfo DataFrame:")
+df.info()
+# .info(): tampilkan informasi komprehensif
+# Termasuk: index type, column names, non-null counts, dtypes, memory usage
+
+# Statistik deskriptif
+print("\nStatistik deskriptif (kolom numerik):")
+print(df.describe())
+# .describe(): statistik untuk kolom numerik
+# count, mean, std, min, 25%, 50%, 75%, max
+
+print("\nStatistik semua kolom:")
+print(df.describe(include='all'))
+# include='all': statistik untuk semua kolom termasuk non-numerik
+# Non-numerik: count, unique, top (most frequent), freq
+
+# Random sampling
+print("\n2 baris random:")
+print(df.sample(2))
+# .sample(n): ambil n baris secara random
+# Berguna untuk quick check data besar
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Info DataFrame:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 5 entries, 0 to 4
+Data columns (total 5 columns):
+ #   Column      Non-Null Count  Dtype
+---  ------      --------------  -----
+ 0   Name        5 non-null      object
+ 1   Age         5 non-null      int64
+ 2   City        5 non-null      object
+ 3   Salary      5 non-null      int64
+ 4   Department  5 non-null      object
+dtypes: int64(2), object(3)
+
+Statistik deskriptif (kolom numerik):
+             Age        Salary
+count   5.000000      5.000000
+mean   30.000000  60000.000000
+std     4.082483   7905.694150
+min    25.000000  50000.000000
+25%    28.000000  55000.000000
+50%    30.000000  60000.000000
+75%    32.000000  65000.000000
+max    35.000000  70000.000000
+\end{lstlisting}
+
+\subsection*{Seleksi Data DataFrame}
+
+\begin{lstlisting}[language=python, caption={Teknik Seleksi Baris dan Kolom}, style=python]
+# Pilih satu kolom (returns Series)
+print("Kolom Name:")
+print(df['Name'])
+# df['column_name']: akses satu kolom, return Series
+print("Type:", type(df['Name']))
+
+# Pilih multiple kolom (returns DataFrame)
+print("\nName dan Age:")
+print(df[['Name', 'Age']])
+# df[['col1', 'col2']]: akses multiple kolom dengan list names
+# Return: DataFrame subset
+print("Type:", type(df[['Name', 'Age']]))
+
+# Seleksi baris by position (iloc)
+print("\nBaris pertama (Series format):")
+print(df.iloc[0])
+# .iloc[row_position]: akses baris by integer position
+# Return: Series dengan column names sebagai index
+print("Type:", type(df.iloc[0]))
+
+print("\nBaris pertama (DataFrame format):")
+print(df.iloc[[0]])
+# .iloc[[position]]: gunakan list untuk return DataFrame format
+
+# Range baris
+print("\n3 baris pertama:")
+print(df.iloc[:3])
+# .iloc[start:stop]: slice baris berdasarkan position
+
+# Kombinasi baris dan kolom
+print("\nBaris 0-2, kolom Name dan Salary:")
+print(df.iloc[:3][['Name', 'Salary']])
+# Method chaining: iloc untuk baris, bracket untuk kolom
+# Alternatif menggunakan loc:
+print(df.loc[:2, ['Name', 'Salary']])
+# .loc[row_slice, col_list]: label-based selection
+# loc termasuk endpoint (row 2 included)
+\end{lstlisting}
+
+\subsection*{Filtering Data}
+
+\begin{lstlisting}[language=python, caption={Boolean Indexing dan Filtering}, style=python]
+# Single condition filtering
+print("Employees dengan age > 30:")
+print(df[df['Age'] > 30])
+# df['Age'] > 30: buat boolean Series
+# df[boolean_series]: filter DataFrame berdasarkan kondisi
+
+print("\nEmployees dari IT department:")
+print(df[df['Department'] == 'IT'])
+# == : operator equality untuk comparison
+# Return: rows dimana Department equals 'IT'
+
+# Multiple conditions dengan logical operators
+print("\nAge > 28 AND Salary > 60000:")
+print(df[(df['Age'] > 28) & (df['Salary'] > 60000)])
+# & : logical AND untuk boolean arrays (bukan 'and' keyword)
+# Setiap kondisi harus dalam parentheses untuk precedence
+
+print("\nDepartment IT OR Finance:")
+print(df[(df['Department'] == 'IT') | (df['Department'] == 'Finance')])
+# | : logical OR untuk boolean arrays (bukan 'or' keyword)
+
+# isin method untuk membership testing
+departments = ['IT', 'Marketing']
+print(f"\nEmployees di department {departments}:")
+print(df[df['Department'].isin(departments)])
+# .isin(values): check apakah value dalam kolom ada di list values
+# Return: boolean Series untuk filtering
+
+# String methods untuk text data
+print("\nCities yang mengandung 'o':")
+print(df[df['City'].str.contains('o')])
+# .str: accessor untuk string methods pada Series
+# .contains(): check substring dalam string values
+# Return: boolean Series
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Employees dengan age > 30:
+      Name  Age   City  Salary Department
+1      Bob   30 London   60000    Finance
+2  Charlie   35  Tokyo   70000         IT
+4      Eve   32 Berlin   65000    Finance
+
+Employees dari IT department:
+      Name  Age      City  Salary Department
+0    Alice   25  New York   50000         IT
+2  Charlie   35     Tokyo   70000         IT
+
+Age > 28 AND Salary > 60000:
+      Name  Age   City  Salary Department
+1      Bob   30 London   60000    Finance
+2  Charlie   35  Tokyo   70000         IT
+4      Eve   32 Berlin   65000    Finance
+\end{lstlisting}
+
+\subsection*{Manipulasi Data}
+
+\begin{lstlisting}[language=python, caption={Menambah, Mengubah, dan Menghapus Data}, style=python]
+# Menambah kolom baru
+df['Bonus'] = df['Salary'] * 0.1
+# df['new_column']: membuat kolom baru atau update existing
+# Operasi vectorized: kalkulasi diterapkan ke semua rows
+df['Total_Compensation'] = df['Salary'] + df['Bonus']
+# Mathematical operations antar kolom
+df['Age_Group'] = df['Age'].apply(lambda x: 'Young' if x < 30 else 'Experienced')
+# .apply(function): terapkan function ke setiap element dalam Series
+# lambda: anonymous function untuk conditional logic
+
+print("DataFrame dengan kolom baru:")
+print(df[['Name', 'Age', 'Salary', 'Bonus', 'Age_Group']])
+
+# Modify existing column
+df['Salary_K'] = df['Salary'] / 1000
+# Transform existing data: salary dalam ribuan
+
+# Drop columns
+df_clean = df.drop(['Bonus', 'Total_Compensation'], axis=1)
+# .drop(labels, axis): hapus rows atau columns
+# labels: nama kolom/index yang akan dihapus
+# axis=1: operasi pada kolom (axis=0 untuk baris)
+# Return: DataFrame baru tanpa kolom yang dihapus (original tidak berubah)
+print("\nColumns setelah drop:")
+print(df_clean.columns.tolist())
+
+# Drop baris
+df_no_first = df.drop(0, axis=0)
+# .drop(index, axis=0): hapus baris dengan index tertentu
+print("Shape setelah drop first row:", df_no_first.shape)
+
+# Reset index
+df_reset = df.reset_index(drop=True)
+# .reset_index(): buat index baru (0, 1, 2, ...)
+# drop=True: jangan simpan index lama sebagai kolom
+\end{lstlisting}
+
+\subsection*{Sorting Data}
+
+\begin{lstlisting}[language=python, caption={Mengurutkan Data}, style=python]
+# Sort by single column
+print("Sort by Age (ascending):")
+print(df.sort_values('Age')[['Name', 'Age', 'Salary']])
+# .sort_values(column): urutkan DataFrame berdasarkan kolom tertentu
+# Default: ascending=True (kecil ke besar)
+
+print("\nSort by Salary (descending):")
+print(df.sort_values('Salary', ascending=False)[['Name', 'Age', 'Salary']])
+# ascending=False: urutkan dari besar ke kecil
+
+# Sort by multiple columns
+print("\nSort by Department then Age:")
+print(df.sort_values(['Department', 'Age'])[['Name', 'Department', 'Age']])
+# .sort_values([col1, col2]): sort berdasarkan multiple kolom
+# Prioritas: Department dulu, kemudian Age dalam setiap department
+
+# Sort by index
+df_indexed = df.set_index('Name')
+# .set_index(column): jadikan kolom sebagai index
+df_sorted = df_indexed.sort_index()
+# .sort_index(): urutkan berdasarkan index labels
+print("\nSort by Name (as index):")
+print(df_sorted[['Age', 'City']])
+\end{lstlisting}
+
+\subsection*{Grouping dan Aggregation}
+
+\begin{lstlisting}[language=python, caption={Group Operations dan Statistical Aggregation}, style=python]
+# Group by single column
+print("Average salary by Department:")
+dept_salary = df.groupby('Department')['Salary'].mean()
+# .groupby(column): group DataFrame berdasarkan nilai dalam kolom
+# ['Salary']: pilih kolom untuk aggregation
+# .mean(): hitung rata-rata untuk setiap group
+print(dept_salary)
+
+# Multiple aggregations pada satu kolom
+print("\nMultiple stats by Department:")
+dept_stats = df.groupby('Department')['Salary'].agg(['mean', 'min', 'max', 'count'])
+# .agg([functions]): terapkan multiple aggregation functions
+# Return: DataFrame dengan functions sebagai kolom
+print(dept_stats)
+
+# Group by multiple columns
+print("\nGroup by Department and Age_Group:")
+multi_group = df.groupby(['Department', 'Age_Group']).size()
+# .groupby([col1, col2]): group by multiple columns
+# .size(): hitung jumlah rows dalam setiap group
+# Return: Series dengan MultiIndex
+print(multi_group)
+
+# Custom aggregation untuk multiple columns
+print("\nCustom aggregation:")
+custom_agg = df.groupby('Department').agg({
+    'Age': ['mean', 'min', 'max'],
+    'Salary': ['mean', 'sum'],
+    'Name': 'count'
+})
+# .agg(dict): custom aggregation per kolom
+# Dictionary: {column: function_or_list_of_functions}
+print(custom_agg)
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Average salary by Department:
+Department
+Finance      62500.0
+IT           60000.0
+Marketing    55000.0
+Name: Salary, dtype: float64
+
+Multiple stats by Department:
+           mean    min    max  count
+Department
+Finance   62500  60000  65000      2
+IT        60000  50000  70000      2
+Marketing 55000  55000  55000      1
+\end{lstlisting}
+
+\subsection*{File I/O Operations}
+
+\begin{lstlisting}[language=python, caption={Membaca dan Menulis File}, style=python]
+# Membaca CSV
+# df_csv = pd.read_csv('data.csv')
+# pd.read_csv(filepath): baca file CSV menjadi DataFrame
+# Parameter: path ke file CSV
+# Return: DataFrame dari isi file
+
+# df_csv = pd.read_csv('data.csv', sep=';', encoding='utf-8')
+# sep=';': separator yang digunakan dalam file (default ',')
+# encoding='utf-8': character encoding untuk handling karakter khusus
+
+# Membaca Excel
+# df_excel = pd.read_excel('data.xlsx', sheet_name='Sheet1')
+# pd.read_excel(): baca file Excel
+# sheet_name: nama sheet yang akan dibaca (default 0/sheet pertama)
+
+# Membaca dengan parameter advanced
+# df_custom = pd.read_csv('data.csv',
+#                        skiprows=1,           # Skip first row
+#                        usecols=[0, 1, 3],    # Use specific columns
+#                        names=['Col1', 'Col2', 'Col3'],  # Custom column names
+#                        na_values=['NULL', 'N/A'])       # Custom NA values
+# skiprows=1: lewati baris pertama (header atau metadata)
+# usecols=[0, 1, 3]: baca hanya kolom dengan index tertentu
+# names: ganti nama kolom dengan list custom names
+# na_values: list nilai yang akan dianggap sebagai NaN/missing
+
+# Menyimpan ke CSV
+# df.to_csv('output.csv', index=False)
+# .to_csv(filepath): simpan DataFrame ke file CSV
+# index=False: jangan simpan row index sebagai kolom
+
+# df.to_excel('output.xlsx', index=False, sheet_name='Data')
+# .to_excel(): simpan ke file Excel
+# sheet_name: nama sheet dalam file Excel
+
+# Menyimpan dengan parameter custom
+# df.to_csv('output.csv',
+#          index=False,        # Jangan simpan index
+#          sep=';',           # Gunakan semicolon separator
+#          encoding='utf-8')  # Character encoding
+\end{lstlisting}
+
+\section{Matplotlib — Plotting Library}
+
+Matplotlib adalah library fundamental untuk membuat visualisasi statis, animasi, dan interaktif di Python. Library ini menyediakan control yang detail untuk setiap aspek dari plot.
+
+\subsection*{Komponen Matplotlib}
+\begin{itemize}
+  \item \textbf{Figure}: Canvas atau area gambar keseluruhan
+  \item \textbf{Axes}: Area plotting actual (dapat multiple dalam satu figure)
+  \item \textbf{Artist}: Semua object yang dapat digambar (lines, text, patchesm, dll)
+\end{itemize}
+
+\subsection*{Basic Line Plot}
+
+\begin{lstlisting}[language=python, caption={Membuat Line Plot Dasar}, style=python]
+import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt: import modul pyplot dengan alias plt
+# pyplot: state-based interface untuk matplotlib (mirip MATLAB style)
+import numpy as np
+
+# Data untuk plotting
+x = np.linspace(0, 10, 100)
+# np.linspace(0, 10, 100): 100 titik merata dari 0 ke 10
+y = np.sin(x)
+# np.sin(x): hitung sinus untuk setiap nilai x (dalam radian)
+
+# Basic line plot
+plt.figure(figsize=(10, 6))
+# plt.figure(): buat figure baru
+# figsize=(width, height): ukuran figure dalam inch
+plt.plot(x, y)
+# plt.plot(x, y): buat line plot
+# Parameter 1: array nilai x-axis
+# Parameter 2: array nilai y-axis
+plt.title('Basic Sine Wave')
+# plt.title(): tambah judul plot
+plt.xlabel('X values')
+# plt.xlabel(): tambah label untuk x-axis
+plt.ylabel('Y values')
+# plt.ylabel(): tambah label untuk y-axis
+plt.grid(True)
+# plt.grid(True): tampilkan grid pada plot
+# Parameter: True/False untuk show/hide
+plt.show()
+# plt.show(): render dan tampilkan plot
+\end{lstlisting}
+
+\subsection*{Multiple Lines dan Customization}
+
+\begin{lstlisting}[language=python, caption={Plot dengan Multiple Lines dan Styling}, style=python]
+# Data untuk multiple lines
+x = np.linspace(0, 10, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+plt.figure(figsize=(10, 6))
+
+# Plot multiple lines dengan customization
+plt.plot(x, y1, label='sin(x)', color='blue', linewidth=2)
+# label='sin(x)': label untuk legend
+# color='blue': warna garis (nama warna, hex code, RGB tuple)
+# linewidth=2: ketebalan garis dalam points
+plt.plot(x, y2, label='cos(x)', color='red', linestyle='--', linewidth=2)
+# linestyle='--': style garis
+# Options: '-' (solid), '--' (dashed), ':' (dotted), '-.' (dashdot)
+
+# Customization advanced
+plt.title('Sine and Cosine Waves', fontsize=16, fontweight='bold')
+# fontsize: ukuran font dalam points
+# fontweight: ketebalan font ('normal', 'bold', 'light')
+plt.xlabel('X values', fontsize=12)
+plt.ylabel('Y values', fontsize=12)
+plt.legend(loc='upper right')
+# plt.legend(): tampilkan legend berdasarkan labels
+# loc: posisi legend ('upper/lower' + 'left/right/center')
+plt.grid(True, alpha=0.3)
+# alpha=0.3: transparansi grid (0=invisible, 1=opaque)
+
+# Set axis limits
+plt.xlim(0, 10)
+# plt.xlim(min, max): set batas range x-axis
+plt.ylim(-1.5, 1.5)
+# plt.ylim(min, max): set batas range y-axis
+
+plt.tight_layout()
+# plt.tight_layout(): otomatis adjust layout untuk mencegah overlap
+plt.show()
+\end{lstlisting}
+
+\subsection*{Berbagai Jenis Plot}
+
+\begin{lstlisting}[language=python, caption={Histogram untuk Distribusi Data}, style=python]
+# Generate sample data
+np.random.seed(42)
+# np.random.seed(): set seed untuk reproducible random numbers
+data = np.random.normal(100, 15, 1000)
+# np.random.normal(loc, scale, size): generate normal distribution
+# loc=100: mean distribusi
+# scale=15: standard deviation
+# size=1000: jumlah sample
+
+plt.figure(figsize=(10, 6))
+
+# Histogram dengan customization
+plt.hist(data, bins=30, alpha=0.7, color='skyblue', edgecolor='black')
+# plt.hist(): buat histogram
+# data: array data untuk di-bin
+# bins=30: jumlah bins/intervals (default=10)
+# alpha=0.7: transparansi bars
+# color: warna filling bars
+# edgecolor: warna border bars
+plt.title('Distribution of Random Normal Data')
+plt.xlabel('Value')
+plt.ylabel('Frequency')
+
+# Tambah garis vertikal untuk mean
+mean_val = np.mean(data)
+plt.axvline(mean_val, color='red', linestyle='--',
+           label=f'Mean: {mean_val:.1f}')
+# plt.axvline(x): tambah garis vertikal pada posisi x
+# color, linestyle: styling garis
+# label: untuk legend
+
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+\begin{lstlisting}[language=python, caption={Scatter Plot untuk Hubungan Variabel}, style=python]
+# Data untuk scatter plot
+np.random.seed(42)
+x_scatter = np.random.randn(100)
+# np.random.randn(size): generate standard normal distribution (mean=0, std=1)
+y_scatter = 2*x_scatter + np.random.randn(100)
+# y = 2x + noise: buat korelasi positif dengan added noise
+
+plt.figure(figsize=(8, 6))
+plt.scatter(x_scatter, y_scatter, alpha=0.6, color='purple', s=50)
+# plt.scatter(): buat scatter plot
+# x_scatter, y_scatter: koordinat points
+# alpha=0.6: transparansi points
+# s=50: size dari points (dalam points^2)
+plt.title('Scatter Plot - Relationship Between X and Y')
+plt.xlabel('X values')
+plt.ylabel('Y values')
+
+# Tambah trendline
+z = np.polyfit(x_scatter, y_scatter, 1)
+# np.polyfit(x, y, degree): fit polynomial degree ke data
+# degree=1: linear fit (y = mx + b)
+# Return: coefficients [m, b]
+p = np.poly1d(z)
+# np.poly1d(): buat polynomial function dari coefficients
+plt.plot(x_scatter, p(x_scatter), "r--", alpha=0.8,
+         label=f'Trendline: y={z[0]:.2f}x+{z[1]:.2f}')
+# Plot trendline dengan equation dalam label
+
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+\begin{lstlisting}[language=python, caption={Bar Chart untuk Data Kategorikal}, style=python]
+# Data kategorikal
+categories = ['Product A', 'Product B', 'Product C', 'Product D', 'Product E']
+values = [23, 17, 35, 29, 12]
+
+plt.figure(figsize=(10, 6))
+bars = plt.bar(categories, values,
+               color=['red', 'blue', 'green', 'orange', 'purple'],
+               alpha=0.7, edgecolor='black')
+# plt.bar(): buat bar chart
+# categories: labels untuk x-axis
+# values: tinggi bars
+# color: list warna untuk setiap bar
+# edgecolor: warna border bars
+
+# Tambah nilai di atas setiap bar
+for bar, value in zip(bars, values):
+    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.5,
+             str(value), ha='center', va='bottom')
+# zip(): iterasi berpasangan bars dan values
+# plt.text(): tambah text annotation
+# bar.get_x(), bar.get_width(): posisi dan ukuran bar
+# ha='center': horizontal alignment
+# va='bottom': vertical alignment
+
+plt.title('Sales by Product')
+plt.xlabel('Products')
+plt.ylabel('Sales Amount')
+plt.xticks(rotation=45)
+# plt.xticks(rotation=45): putar x-axis labels 45 derajat
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\subsection*{Multiple Subplots}
+
+\begin{lstlisting}[language=python, caption={Membuat Grid Subplots}, style=python]
+# Buat figure dengan multiple subplots
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+# plt.subplots(nrows, ncols): buat grid subplots
+# Return: fig (figure object), axes (array of axes objects)
+# axes: array 2D untuk akses individual subplot
+
+# Data untuk subplots
+x = np.linspace(0, 10, 100)
+
+# Subplot 1 (top-left): Line plot
+axes[0, 0].plot(x, np.sin(x), 'b-', linewidth=2)
+# axes[row, col]: akses subplot pada posisi tertentu
+# 'b-': format string untuk blue solid line
+axes[0, 0].set_title('Sin(x)')
+# .set_title(): method untuk set judul subplot individual
+axes[0, 0].set_xlabel('X')
+axes[0, 0].set_ylabel('Y')
+axes[0, 0].grid(True)
+
+# Subplot 2 (top-right): Cos plot
+axes[0, 1].plot(x, np.cos(x), 'r--', linewidth=2)
+# 'r--': red dashed line
+axes[0, 1].set_title('Cos(x)')
+axes[0, 1].set_xlabel('X')
+axes[0, 1].set_ylabel('Y')
+axes[0, 1].grid(True)
+
+# Subplot 3 (bottom-left): Histogram
+random_data = np.random.randn(1000)
+axes[1, 0].hist(random_data, bins=30, alpha=0.7, color='green')
+# .hist(): histogram method pada axes object
+axes[1, 0].set_title('Random Normal Distribution')
+axes[1, 0].set_xlabel('Value')
+axes[1, 0].set_ylabel('Frequency')
+
+# Subplot 4 (bottom-right): Scatter
+x_rand = np.random.randn(100)
+y_rand = np.random.randn(100)
+axes[1, 1].scatter(x_rand, y_rand, alpha=0.6, color='purple')
+# .scatter(): scatter plot method pada axes object
+axes[1, 1].set_title('Random Scatter')
+axes[1, 1].set_xlabel('X')
+axes[1, 1].set_ylabel('Y')
+
+plt.tight_layout()
+# plt.tight_layout(): otomatis adjust spacing antar subplots
+plt.show()
+\end{lstlisting}
+
+\section{Seaborn — Statistical Data Visualization}
+
+Seaborn adalah library visualisasi data yang dibangun di atas matplotlib. Seaborn menyediakan interface tingkat tinggi untuk membuat grafik statistik yang menarik dan informatif dengan minimal code.
+
+\subsection*{Keunggulan Seaborn}
+\begin{itemize}
+  \item Built-in statistical functions untuk exploratory data analysis
+  \item Default styles yang lebih menarik dibanding matplotlib
+  \item Integration yang baik dengan pandas DataFrame
+  \item Automatic statistical calculations dalam plot
+\end{itemize}
+
+\subsection*{Setup dan Built-in Datasets}
+
+\begin{lstlisting}[language=python, caption={Setup Seaborn dan Load Dataset}, style=python]
+import seaborn as sns
+# import seaborn as sns: import seaborn dengan alias sns
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set style global Seaborn
+sns.set_style("whitegrid")
+# sns.set_style(): set default style untuk semua plots
+# Options: "darkgrid", "whitegrid", "dark", "white", "ticks"
+sns.set_palette("husl")
+# sns.set_palette(): set default color palette
+# "husl": palette dengan hue, saturation, lightness yang distinct
+
+# Load built-in dataset
+tips = sns.load_dataset("tips")
+# sns.load_dataset("name"): load built-in dataset untuk practice
+# "tips": dataset restaurant tips dengan features:
+# total_bill, tip, sex, smoker, day, time, size
+print("Dataset tips info:")
+print(tips.head())
+print("\nDataset shape:", tips.shape)
+print("Columns:", tips.columns.tolist())
+print("\nData types:")
+print(tips.dtypes)
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+Dataset tips info:
+   total_bill   tip     sex smoker  day    time  size
+0       16.99  1.01  Female     No  Sun  Dinner     2
+1       10.34  1.66    Male     No  Sun  Dinner     3
+2       21.01  3.50    Male     No  Sun  Dinner     3
+3       23.68  3.31    Male     No  Sun  Dinner     2
+4       24.59  3.61  Female     No  Sun  Dinner     4
+
+Dataset shape: (244, 7)
+Columns: ['total_bill', 'tip', 'sex', 'smoker', 'day', 'time', 'size']
+\end{lstlisting}
+
+\subsection*{Distribution Plots}
+
+\begin{lstlisting}[language=python, caption={Histogram dan Density Plots}, style=python]
+# 1. Histogram dengan KDE (Kernel Density Estimation)
+plt.figure(figsize=(10, 6))
+sns.histplot(tips['total_bill'], kde=True, bins=20)
+# sns.histplot(): histogram dengan seaborn styling
+# data: Series atau array untuk histogram
+# kde=True: tambahkan kernel density estimation curve
+# bins=20: jumlah bins dalam histogram
+plt.title('Distribusi Total Bill')
+plt.xlabel('Total Bill ($)')
+plt.ylabel('Frequency')
+plt.show()
+
+# 2. Distribution plot dengan multiple groups
+plt.figure(figsize=(10, 6))
+sns.histplot(data=tips, x='total_bill', hue='sex', kde=True, alpha=0.7)
+# data=tips: DataFrame sebagai sumber data
+# x='total_bill': kolom untuk x-axis
+# hue='sex': kolom untuk color grouping
+# kde=True: density curve untuk setiap group
+plt.title('Distribusi Total Bill berdasarkan Gender')
+plt.show()
+
+# 3. Box plot untuk melihat distribusi dan outliers
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='day', y='total_bill', data=tips)
+# sns.boxplot(): box and whisker plot
+# x='day': kolom categorical untuk x-axis
+# y='total_bill': kolom numerical untuk y-axis
+# Menampilkan: median, quartiles, outliers per kategori
+plt.title('Total Bill Distribution per Hari')
+plt.ylabel('Total Bill ($)')
+plt.show()
+\end{lstlisting}
+
+\subsection*{Relationship Plots}
+
+\begin{lstlisting}[language=python, caption={Scatter Plot dan Correlation}, style=python]
+# Scatter plot dengan color coding
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x='total_bill', y='tip', hue='smoker',
+               style='sex', size='size', data=tips)
+# sns.scatterplot(): enhanced scatter plot
+# x, y: kolom untuk koordinat
+# hue='smoker': color coding berdasarkan smoker status
+# style='sex': marker style berdasarkan gender
+# size='size': ukuran point berdasarkan party size
+plt.title('Relationship: Total Bill vs Tip')
+plt.xlabel('Total Bill ($)')
+plt.ylabel('Tip ($)')
+plt.show()
+
+# Scatter dengan regression line
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x='total_bill', y='tip', alpha=0.6, data=tips)
+sns.regplot(x='total_bill', y='tip', data=tips, scatter=False, color='red')
+# sns.regplot(): scatter plot dengan regression line
+# scatter=False: jangan tampilkan scatter points (sudah ada dari scatterplot)
+# Otomatis calculate dan plot linear regression
+plt.title('Total Bill vs Tip dengan Trendline')
+plt.show()
+
+# Correlation heatmap
+plt.figure(figsize=(8, 6))
+# Select hanya kolom numerik
+numeric_cols = tips.select_dtypes(include=[np.number])
+# .select_dtypes(include=[type]): filter kolom berdasarkan data type
+correlation = numeric_cols.corr()
+# .corr(): hitung correlation matrix antar kolom
+# Return: DataFrame dengan correlation coefficients (-1 to 1)
+sns.heatmap(correlation, annot=True, cmap='coolwarm', center=0,
+           square=True, fmt='.2f')
+# sns.heatmap(): visualisasi matrix sebagai heatmap
+# annot=True: tampilkan correlation values dalam cells
+# cmap='coolwarm': colormap (blue=negative, red=positive)
+# center=0: center colormap pada nilai 0
+# square=True: cells berbentuk square
+# fmt='.2f': format angka 2 decimal places
+plt.title('Correlation Matrix - Tips Dataset')
+plt.show()
+\end{lstlisting}
+
+\subsection*{Statistical Plots}
+
+\begin{lstlisting}[language=python, caption={Box Plot, Violin Plot, dan Strip Plot}, style=python]
+# 1. Box plot dengan grouping
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='day', y='total_bill', hue='sex', data=tips)
+# hue='sex': sub-grouping dalam setiap kategori day
+# Menampilkan distribusi per kombinasi (day, sex)
+plt.title('Total Bill Distribution: Day vs Gender')
+plt.show()
+
+# 2. Violin plot (combination of box plot + density)
+plt.figure(figsize=(10, 6))
+sns.violinplot(x='day', y='total_bill', hue='sex', data=tips, split=True)
+# sns.violinplot(): kombinasi box plot dan kernel density
+# split=True: split violin untuk hue categories
+# Menunjukkan shape distribusi data dalam setiap kategori
+plt.title('Violin Plot: Total Bill Distribution')
+plt.show()
+
+# 3. Strip plot untuk melihat individual points
+plt.figure(figsize=(10, 6))
+sns.stripplot(x='day', y='total_bill', hue='sex', data=tips,
+             dodge=True, alpha=0.7)
+# sns.stripplot(): scatter plot untuk categorical data
+# dodge=True: separate points berdasarkan hue
+# alpha=0.7: transparansi untuk overlapping points
+plt.title('Strip Plot: Individual Data Points')
+plt.show()
+
+# 4. Count plot untuk frequency
+plt.figure(figsize=(8, 6))
+sns.countplot(x='day', hue='sex', data=tips)
+# sns.countplot(): bar chart untuk menghitung frekuensi
+# x='day': kategori yang akan dihitung
+# hue='sex': sub-kategori
+# Otomatis menghitung frequency per kategori
+plt.title('Customer Count per Day by Gender')
+plt.ylabel('Count')
+plt.show()
+\end{lstlisting}
+
+\subsection*{Multi-plot Grids}
+
+\begin{lstlisting}[language=python, caption={FacetGrid dan PairPlot untuk Multiple Variables}, style=python]
+# 1. Pair plot untuk semua kombinasi variables
+sns.pairplot(tips, hue='smoker', diag_kind='hist')
+# sns.pairplot(): matrix scatter plots untuk semua pasangan kolom numerik
+# hue='smoker': color coding untuk groups
+# diag_kind='hist': jenis plot untuk diagonal (histogram/kde)
+# Otomatis membuat: diagonal=distribution, off-diagonal=scatter
+plt.suptitle('Pairwise Relationships in Tips Dataset', y=1.02)
+# plt.suptitle(): super title untuk keseluruhan figure
+plt.show()
+
+# 2. FacetGrid untuk custom multiple plots
+g = sns.FacetGrid(tips, col='time', row='sex', margin_titles=True)
+# sns.FacetGrid(): framework untuk multiple subplots berdasarkan categories
+# col='time': kolom grid berdasarkan time values (Lunch/Dinner)
+# row='sex': baris grid berdasarkan sex values (Male/Female)
+# margin_titles=True: tampilkan category labels di margin
+g.map(plt.hist, 'total_bill', bins=15, alpha=0.7)
+# .map(function, column): terapkan function ke setiap subplot
+# plt.hist: function yang akan diterapkan
+# 'total_bill': nama kolom untuk di-pass ke function
+g.add_legend()
+# .add_legend(): tambah legend untuk grid
+plt.show()
+
+# 3. Joint plot (scatter + marginal distributions)
+sns.jointplot(x='total_bill', y='tip', data=tips, kind='reg', height=8)
+# sns.jointplot(): scatter plot dengan marginal histograms
+# kind='reg': tambah regression line dan confidence interval
+# height=8: ukuran plot dalam inch
+# Otomatis menambah histogram di margin untuk x dan y distributions
+plt.show()
+\end{lstlisting}
+
+\subsection*{Advanced Seaborn Customization}
+
+\begin{lstlisting}[language=python, caption={Styling dan Customization Advanced}, style=python]
+# Custom color palette
+plt.figure(figsize=(10, 6))
+custom_palette = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"]
+sns.set_palette(custom_palette)
+# sns.set_palette(): set custom color palette
+# Parameter: list hex colors atau nama palette
+
+ax = sns.barplot(x='day', y='total_bill', hue='sex', data=tips)
+# sns.barplot(): bar plot dengan error bars (confidence intervals)
+# Otomatis calculate mean dan confidence interval per kategori
+ax.set_title('Average Total Bill by Day and Gender',
+             fontsize=16, fontweight='bold', pad=20)
+# ax.set_title(): set title dengan custom formatting
+# pad=20: jarak title dari plot area
+ax.set_xlabel('Day of Week', fontsize=12)
+ax.set_ylabel('Average Total Bill ($)', fontsize=12)
+
+# Customize legend
+legend = ax.legend(title='Gender', title_fontsize=12, fontsize=10)
+# .legend(): customize legend appearance
+# title: judul legend
+# title_fontsize, fontsize: ukuran font
+legend.set_frame_on(True)
+# .set_frame_on(): tampilkan frame around legend
+
+# Remove spines untuk clean look
+sns.despine(left=True, bottom=True)
+# sns.despine(): hapus axis spines
+# left=True, bottom=True: hapus left dan bottom spines
+plt.tight_layout()
+plt.show()
+
+# Reset ke default style
+sns.reset_defaults()
+# sns.reset_defaults(): kembalikan ke default matplotlib settings
+\end{lstlisting}
+
+\section{Integrasi Library — Workflow Data Science Lengkap}
+
+Berikut contoh bagaimana keempat library bekerja bersama dalam analisis data end-to-end:
+
+\begin{lstlisting}[language=python, caption={Contoh Analisis Data Sales Lengkap}, style=python]
+# Import semua library
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from datetime import datetime, timedelta
+
+# Set random seed untuk reproducibility
+np.random.seed(42)
+print("="*50)
+print("ANALISIS DATA SALES - PYTHON DATA SCIENCE")
+print("="*50)
+
+# ========================================
+# STEP 1: Generate Data dengan Numpy
+# ========================================
+
+n_samples = 1000
+print(f"\nGenerating {n_samples} sample data...")
+
+# Generate data realistis menggunakan Numpy
+months = np.random.choice(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], n_samples)
+# np.random.choice(): random selection dari array options
+products = np.random.choice(['Laptop', 'Phone', 'Tablet', 'Watch'], n_samples)
+regions = np.random.choice(['North', 'South', 'East', 'West'], n_samples)
+
+# Generate sales amount dengan distribusi yang realistic
+base_sales = np.random.normal(500, 150, n_samples)
+# Normal distribution: mean=500, std=150
+sales_amount = np.abs(base_sales)
+# np.abs(): pastikan semua nilai positif (tidak ada negative sales)
+
+# Add product-based multiplier
+product_multipliers = {'Laptop': 2.5, 'Phone': 1.8, 'Tablet': 1.2, 'Watch': 0.8}
+# Dictionary: multiplier berbeda untuk setiap product
+for i, product in enumerate(products):
+    sales_amount[i] *= product_multipliers[product]
+# enumerate(): iterasi dengan index dan value
+# Adjust sales berdasarkan product type
+
+print("Data generation completed!")
+print(f"Sales range: ${sales_amount.min():.0f} - ${sales_amount.max():.0f}")
+
+# ========================================
+# STEP 2: Buat DataFrame dengan Pandas
+# ========================================
+
+# Combine semua data dalam DataFrame
+df_sales = pd.DataFrame({
+    'Month': months,
+    'Product': products,
+    'Region': regions,
+    'Sales_Amount': sales_amount,
+    'Quarter': pd.Series(months).map({
+        'Jan': 'Q1', 'Feb': 'Q1', 'Mar': 'Q1',
+        'Apr': 'Q2', 'May': 'Q2', 'Jun': 'Q2'
+    })
+})
+# pd.Series().map(dict): mapping values berdasarkan dictionary
+# Buat kolom Quarter dari Month
+
+print("\n" + "="*30)
+print("STEP 2: DataFrame Analysis")
+print("="*30)
+print("DataFrame shape:", df_sales.shape)
+print("\nFirst 5 rows:")
+print(df_sales.head())
+
+# ========================================
+# STEP 3: Data Analysis dengan Pandas
+# ========================================
+
+print("\n" + "="*30)
+print("STEP 3: Statistical Analysis")
+print("="*30)
+
+# Basic statistics
+print("Sales statistics:")
+print(df_sales['Sales_Amount'].describe())
+
+# Group analysis
+print("\nSales by Product:")
+product_sales = df_sales.groupby('Product')['Sales_Amount'].agg(['count', 'mean', 'sum'])
+# .groupby().agg(): multiple aggregation functions
+print(product_sales)
+
+print("\nSales by Month:")
+monthly_sales = df_sales.groupby('Month')['Sales_Amount'].sum().sort_values(ascending=False)
+# .groupby().sum(): total sales per month
+# .sort_values(): urutkan dari highest ke lowest
+print(monthly_sales)
+
+print("\nTop 5 transactions:")
+print(df_sales.nlargest(5, 'Sales_Amount')[['Product', 'Region', 'Sales_Amount']])
+# .nlargest(n, column): ambil n rows dengan nilai terbesar pada kolom tertentu
+\end{lstlisting}
+
+\begin{lstlisting}[language=python, caption={Visualisasi dengan Matplotlib dan Seaborn}, style=python]
+# ========================================
+# STEP 4: Visualisasi dengan Matplotlib
+# ========================================
+
+print("\n" + "="*30)
+print("STEP 4: Data Visualization")
+print("="*30)
+
+# Figure dengan multiple subplots
+fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+
+# Subplot 1: Histogram distribusi sales
+axes[0, 0].hist(df_sales['Sales_Amount'], bins=30, alpha=0.7, color='skyblue', edgecolor='black')
+axes[0, 0].set_title('Distribution of Sales Amount')
+axes[0, 0].set_xlabel('Sales Amount ($)')
+axes[0, 0].set_ylabel('Frequency')
+axes[0, 0].axvline(df_sales['Sales_Amount'].mean(), color='red', linestyle='--',
+                   label=f'Mean: ${df_sales["Sales_Amount"].mean():.0f}')
+# axvline(): garis vertikal untuk menandai mean
+axes[0, 0].legend()
+
+# Subplot 2: Bar chart sales by product
+product_totals = df_sales.groupby('Product')['Sales_Amount'].sum()
+axes[0, 1].bar(product_totals.index, product_totals.values,
+               color=['red', 'blue', 'green', 'orange'], alpha=0.7)
+axes[0, 1].set_title('Total Sales by Product')
+axes[0, 1].set_xlabel('Product')
+axes[0, 1].set_ylabel('Total Sales ($)')
+axes[0, 1].tick_params(axis='x', rotation=45)
+# .tick_params(): customize tick appearance
+
+# Subplot 3: Line plot monthly trend
+monthly_totals = df_sales.groupby('Month')['Sales_Amount'].sum().reindex(
+    ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'])
+# .reindex(): urutkan ulang index sesuai urutan yang diinginkan
+axes[1, 0].plot(monthly_totals.index, monthly_totals.values,
+                marker='o', linewidth=3, markersize=8, color='purple')
+axes[1, 0].set_title('Monthly Sales Trend')
+axes[1, 0].set_xlabel('Month')
+axes[1, 0].set_ylabel('Total Sales ($)')
+axes[1, 0].grid(True, alpha=0.3)
+
+# Subplot 4: Scatter plot
+axes[1, 1].scatter(df_sales['Sales_Amount'],
+                   df_sales['Sales_Amount'] * 0.15 + np.random.normal(0, 20, n_samples),
+                   alpha=0.6, color='orange')
+# Simulate profit sebagai function dari sales + noise
+axes[1, 1].set_title('Sales Amount vs Profit Relationship')
+axes[1, 1].set_xlabel('Sales Amount ($)')
+axes[1, 1].set_ylabel('Profit ($)')
+
+plt.tight_layout()
+plt.show()
+
+# ========================================
+# STEP 5: Advanced Visualization dengan Seaborn
+# ========================================
+
+# 1. Comprehensive analysis dengan seaborn
+plt.figure(figsize=(12, 8))
+sns.boxplot(x='Product', y='Sales_Amount', hue='Region', data=df_sales)
+plt.title('Sales Distribution: Product vs Region')
+plt.xticks(rotation=45)
+plt.show()
+
+# 2. Facet grid untuk detailed breakdown
+g = sns.FacetGrid(df_sales, col='Quarter', row='Product',
+                 margin_titles=True, height=4)
+g.map(plt.hist, 'Sales_Amount', bins=20, alpha=0.7)
+g.add_legend()
+plt.show()
+
+# 3. Pairplot untuk correlation analysis
+# Buat numerical summary per transaction
+df_summary = df_sales.groupby(['Product', 'Region']).agg({
+    'Sales_Amount': ['mean', 'sum', 'count']
+}).reset_index()
+# .reset_index(): flatten MultiIndex columns dan reset index
+df_summary.columns = ['Product', 'Region', 'Avg_Sales', 'Total_Sales', 'Transaction_Count']
+# Rename flattened columns
+
+sns.pairplot(df_summary[['Avg_Sales', 'Total_Sales', 'Transaction_Count']],
+            diag_kind='kde')
+plt.suptitle('Pairwise Analysis of Sales Metrics', y=1.02)
+plt.show()
+
+print("\nAnalysis completed!")
+print("Key insights:")
+print("- Product analysis:", product_totals.idxmax(), "has highest total sales")
+# .idxmax(): return index (Product name) dengan nilai maximum
+print("- Monthly trend:", "June" if monthly_totals['Jun'] > monthly_totals['Jan'] else "January", "performs better")
+print(f"- Average transaction: ${df_sales['Sales_Amount'].mean():.2f}")
+\end{lstlisting}
+
+\textbf{Output yang diharapkan:}
+\begin{lstlisting}[style=bash]
+==================================================
+ANALISIS DATA SALES - PYTHON DATA SCIENCE
+==================================================
+
+Generating 1000 sample data...
+Data generation completed!
+Sales range: $67 - $3204
+
+==============================
+STEP 2: DataFrame Analysis
+==============================
+DataFrame shape: (1000, 5)
+
+First 5 rows:
+  Month Product Region  Sales_Amount Quarter
+0   Jun  Laptop   West       1548.05      Q2
+1   May   Phone  South        891.47      Q2
+2   Jan  Laptop  North       1406.45      Q1
+3   Apr   Watch   East        454.23      Q2
+4   Feb  Tablet   West        892.34      Q1
+
+==============================
+STEP 3: Statistical Analysis
+==============================
+Sales statistics:
+count    1000.000000
+mean      987.234567
+std       678.901234
+min        67.890000
+25%       456.780000
+50%       834.560000
+75%      1289.450000
+max      3204.120000
+
+Sales by Product:
+         count        mean          sum
+Product
+Laptop     249  1876.543   467139.876
+Phone      251  1234.567   309876.543
+Tablet     252   789.012   198789.012
+Watch      248   456.789   113456.789
+\end{lstlisting}
+
+\subsection*{Numpy Seed}
+\noindent np.random.seed(42) itu dipakai untuk mengatur "seed" (benih) dari generator bilangan acak di NumPy.
+
+\noindent Bayangkan generator angka acak seperti mesin undian. Kalau tidak di-set seed-nya, setiap kali jalan program, hasil undiannya bisa berbeda. Tapi kalau kita set seed, misalnya 42, maka mesin akan mulai dari kondisi yang sama, sehingga hasil angka acak selalu sama setiap kali dijalankan.
+
+\begin{lstlisting}[language=python, style=python]
+import numpy as np
+
+# Tanpa seed
+print(np.random.rand(3))  # <- hasil acak
+print(np.random.rand(3))  # <- hasil acak lagi, beda dari atas
+
+# Dengan seed
+np.random.seed(42)
+print(np.random.rand(3))  # <- hasil tertentu
+np.random.seed(42)
+print(np.random.rand(3))  # <- hasilnya sama persis dengan baris di atas
+\end{lstlisting}
+
+\subsection*{Output}
+\begin{lstlisting}[style=bash]
+[0.37454012 0.95071431 0.73199394]
+[0.37454012 0.95071431 0.73199394]
+\end{lstlisting}
+
+
+\section{Latihan Praktikum}
+
+\begin{enumerate}
+  \item \textbf{Setup Environment}:
+  \begin{itemize}
+    \item Install library: \texttt{pip install numpy pandas matplotlib seaborn jupyter}
+    \item Buat virtual environment dan activate
+    \item Launch Jupyter notebook untuk interactive coding
+  \end{itemize}
+
+  \item \textbf{Numpy Practice}:
+  \begin{itemize}
+    \item Buat array 2D random (5x4) dan hitung statistik per baris/kolom
+    \item Implementasikan operasi matrix: transpose, reshape, concatenate
+    \item Praktek boolean indexing untuk filtering data
+  \end{itemize}
+
+  \item \textbf{Pandas Exercise}:
+  \begin{itemize}
+    \item Load dataset CSV (gunakan built-in dataset atau download dari internet)
+    \item Eksplorasi data: shape, dtypes, missing values, statistik deskriptif
+    \item Filtering dan grouping analysis berdasarkan kategori
+    \item Export hasil analysis ke Excel dengan multiple sheets
+  \end{itemize}
+
+  \item \textbf{Visualization Project}:
+  \begin{itemize}
+    \item Buat 4 jenis plot: histogram, scatter, bar chart, box plot
+    \item Implementasikan subplot grid untuk comparison analysis
+    \item Gunakan Seaborn untuk correlation heatmap dan pairplot
+    \item Customize styling: colors, fonts, annotations
+  \end{itemize}
+
+  \item \textbf{Integrated Analysis}:
+  \begin{itemize}
+    \item Pilih dataset real (Kaggle, UCI ML Repository)
+    \item Complete workflow: load → explore → clean → analyze → visualize
+    \item Generate insights dan conclusions dari analysis
+    \item Present findings dalam Jupyter notebook dengan markdown explanations
+  \end{itemize}
+\end{enumerate}
+
+\section*{Best Practices dan Tips}
+
+\subsection*{Performance Optimization}
+\begin{itemize}
+  \item Gunakan vectorized operations (Numpy/Pandas) instead of Python loops
+  \item Specify dtypes yang tepat saat load data untuk menghemat memory
+  \item Gunakan \texttt{chunksize} parameter untuk file besar
+  \item Cache hasil computation yang expensive dengan \texttt{@lru\_cache}
+\end{itemize}
+
+\subsection*{Memory Management}
+\begin{itemize}
+  \item Check memory usage: \texttt{df.info(memory\_usage='deep')}
+  \item Convert string columns ke categorical untuk data repetitive
+  \item Use \texttt{df.dtypes} dan \texttt{pd.to\_numeric()} untuk optimization
+  \item Drop columns yang tidak diperlukan early dalam analysis
+\end{itemize}
+
+\subsection*{Code Organization}
+\begin{itemize}
+  \item Separate data loading, cleaning, analysis, dan visualization dalam functions
+  \item Use descriptive variable names dan consistent naming convention
+  \item Add docstrings untuk functions dan markdown cells untuk explanation
+  \item Version control dengan Git untuk tracking changes
+\end{itemize}
+
+\subsection*{Common Pitfalls}
+\begin{itemize}
+  \item \textbf{Index confusion}: Pahami perbedaan \texttt{.loc[]} (label-based) dan \texttt{.iloc[]} (position-based)
+  \item \textbf{Copy vs View}: Gunakan \texttt{.copy()} untuk avoid unexpected modifications
+  \item \textbf{Missing data}: Selalu check dan handle NaN values dengan \texttt{.isna()}, \texttt{.fillna()}, \texttt{.dropna()}
+  \item \textbf{Data types}: Incorrect dtypes dapat menyebabkan unexpected behavior dan memory issues
+\end{itemize}
+
+\section*{Syntax Reference Card}
+
+\subsection*{Numpy Quick Reference}
+\begin{lstlisting}[language=python, style=python]
+# Array creation
+np.array(), np.zeros(), np.ones(), np.full(), np.eye()
+np.arange(), np.linspace(), np.random.random(), np.random.randint()
+
+# Array properties
+arr.shape, arr.dtype, arr.ndim, arr.size
+
+# Mathematical operations
+np.mean(), np.median(), np.std(), np.var(), np.min(), np.max()
+np.sum(), np.prod(), np.sqrt(), np.exp(), np.log()
+
+# Array manipulation
+arr.reshape(), arr.flatten(), arr.T, np.concatenate(), np.split()
+\end{lstlisting}
+
+\subsection*{Pandas Quick Reference}
+\begin{lstlisting}[language=python, style=python]
+# DataFrame creation dan I/O
+pd.DataFrame(), pd.Series(), pd.read_csv(), pd.read_excel()
+df.to_csv(), df.to_excel()
+
+# Data exploration
+df.head(), df.tail(), df.info(), df.describe(), df.shape, df.dtypes
+
+# Selection dan filtering
+df['col'], df[['col1', 'col2']], df.iloc[], df.loc[]
+df[df['col'] > value], df[df['col'].isin(list)]
+
+# Data manipulation
+df.groupby(), df.sort_values(), df.drop(), df.apply()
+df.reset_index(), df.set_index()
+\end{lstlisting}
+
+\subsection*{Matplotlib Quick Reference}
+\begin{lstlisting}[language=python, style=python]
+# Basic plotting
+plt.figure(), plt.plot(), plt.scatter(), plt.hist(), plt.bar()
+plt.title(), plt.xlabel(), plt.ylabel(), plt.legend()
+
+# Customization
+plt.xlim(), plt.ylim(), plt.grid(), plt.xticks(), plt.yticks()
+plt.tight_layout(), plt.show()
+
+# Subplots
+plt.subplots(), axes[i,j].plot(), axes[i,j].set_title()
+\end{lstlisting}
+
+\subsection*{Seaborn Quick Reference}
+\begin{lstlisting}[language=python, style=python]
+# Distribution plots
+sns.histplot(), sns.boxplot(), sns.violinplot()
+
+# Relationship plots
+sns.scatterplot(), sns.regplot(), sns.heatmap()
+
+# Categorical plots
+sns.barplot(), sns.countplot(), sns.stripplot()
+
+# Multi-plot grids
+sns.pairplot(), sns.FacetGrid(), sns.jointplot()
+
+# Styling
+sns.set_style(), sns.set_palette(), sns.despine()
+\end{lstlisting}
+
+\section*{Checklist untuk Data Science Workflow}
+
+\begin{itemize}
+  \item \textbf{Data Loading}: Check file format, encoding, separators, missing values
+  \item \textbf{Data Exploration}: Shape, dtypes, statistical summary, unique values
+  \item \textbf{Data Cleaning}: Handle missing values, outliers, incorrect dtypes
+  \item \textbf{Analysis}: Grouping, aggregation, correlation, statistical testing
+  \item \textbf{Visualization}: Choose appropriate plot types, clear labels, meaningful colors
+  \item \textbf{Interpretation}: Extract insights, validate assumptions, document findings
+\end{itemize}
+
+\section*{Kesimpulan}
+
+Python telah menjadi standar de facto untuk data science karena ekosistem library yang powerful dan terintegrasi. Numpy menyediakan foundation komputasi numerik yang efisien. Pandas memungkinkan manipulasi data tabular yang intuitif dan powerful. Matplotlib memberikan control detail untuk visualisasi, sedangkan Seaborn menyediakan statistical plots yang beautiful dengan minimal code.
+
+Kombinasi keempat library ini mencakup 80\% kebutuhan daily workflow data scientist. Mastery terhadap tools fundamental ini adalah prerequisite untuk advanced topics seperti machine learning, deep learning, dan statistical modeling.
+
+Key takeaways:
+\begin{itemize}
+  \item Numpy untuk array operations dan mathematical computations
+  \item Pandas untuk data manipulation dan analysis
+  \item Matplotlib untuk custom visualizations dan fine-grained control
+  \item Seaborn untuk statistical plots dan exploratory data analysis
+  \item Integration antar library memungkinkan workflow yang seamless dan efficient
+\end{itemize}
+
+\textbf{Next Steps}: Praktek dengan real datasets, explore advanced features masing-masing library, dan pelajari domain-specific applications (time series, geospatial, text analysis).
