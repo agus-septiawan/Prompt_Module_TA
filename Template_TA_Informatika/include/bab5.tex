@@ -1,0 +1,55 @@
+%-------------------------------------------------------------------------------
+%                            BAB V
+%               		KESIMPULAN DAN SARAN
+%-------------------------------------------------------------------------------
+% \fancyhf{} 
+% \fancyfoot[R]{\thepage}
+\chapter{KESIMPULAN DAN SARAN}
+%\thispagestyle{plain} % Halaman pertama bab menggunakan gaya plain
+
+\section{Kesimpulan}
+
+\par Berdasarkan hasil eksperimen dan perbandingan terhadap arsitektur VGG19-LSTM dan BLIP pada \textit{Visual Question Answering} (VQA) dengan \textit{dataset} PathVQA dan VQA-RAD, diperoleh kesimpulan sebagai berikut:
+
+\begin{enumerate}
+
+    \item Penelitian ini berhasil menerapkan teknik \textit{transfer learning} untuk membangun model VQA dengan menggunakan arsitektur VGG19-LSTM dan BLIP. Arsitektur VGG19-LSTM menggunakan model VGG19 yang telah dilatih pada \textit{dataset} ImageNet untuk ekstraksi fitur citra medis dan model LSTM untuk memproses pertanyaan dari \textit{dataset} PathVQA dan VQA-RAD. Sedangkan BLIP memanfaatkan \textit{pre-trained} model pada tugas VQA yang dilatih dengan \textit{dataset} Visual Genome dan VQA v2.0 untuk memproses citra medis dan pertanyaan dari \textit{dataset} PathVQA dan VQA-RAD.
+
+
+    \item Model BLIP dengan konfigurasi \textit{hyperparameter}: \textit{epochs} 15, \textit{batch size} 8, dan \textit{learning rate} $1 \times 10^{-5}$ menghasilkan performa terbaik pada \textit{dataset} PathVQA yang telah dilakukan augmentasi pertanyaan dengan menciptakan tujuh variasi pertanyaan yang baru dengan akurasi 83.91\%, akurasi \textit{close-ended} 97,43\%, dan akurasi \textit{open-ended} 66,15\%. Sedangkan untuk nilai BLEU-1, BLEU-2, dan BLEU-3 berturut-turut sebesar 69,6, 49,8, 39,87 untuk pertanyaan \textit{open-ended}.
+
+    \item Model BLIP dengan konfigurasi \textit{hyperparameter}: \textit{epochs} 45, \textit{batch size} 8, dan \textit{learning rate} $5 \times 10^{-5}$ menghasilkan performa terbaik pada \textit{dataset} VQA-RAD yang telah dilakukan augmentasi pertanyaan dengan menciptakan tujuh variasi pertanyaan yang baru dengan akurasi 82,86\%, akurasi \textit{close-ended} 87,85\%, dan akurasi \textit{open-ended} 76,82\%. Sedangkan untuk nilai BLEU-1, BLEU-2, dan BLEU-3 berturut-turut sebesar 80,19, 53,36, 40,47 untuk pertanyaan \textit{open-ended}.
+
+    \item Model VGG19-LSTM menunjukkan keterbatasan dalam menyelesaikan tugas VQA, hal ini terlihat dari hasil eksperimen yang dilakukan pada kedua \textit{dataset} PathVQA dan VQA-RAD. Walaupun telah dilakukan augmentasi data pada kedua \textit{dataset} dan \textit{hyperparameter tuning} pada model VGG19-LSTM, performa model tersebut masih jauh dari nilai yang optimal dibandingkan dengan model BLIP. Oleh karena itu, model BLIP akan diimplementasikan ke dalam sistem medis cerdas berbasis web untuk menjawab pertanyaan berdasarkan citra medis.
+
+    \item Model BLIP yang telah dikuantisasi menunjukkan performa yang lebih baik dibandingkan tanpa kuantisasi. Untuk \textit{dataset} PathVQA, ukuran model pra-kuantisasi adalah 1467.73 MB dengan waktu inferensi 0,24 detik, sedangkan pasca-kuantisasi adalah 508,21 MB dengan waktu inferensi 0,20 detik. Untuk \textit{dataset} VQA-RAD, ukuran model pra-kuantisasi adalah 1467,73 MB dengan waktu inferensi 0,21 detik, dan pasca-kuantisasi adalah 508,20 MB dengan waktu inferensi 0,17 detik. Oleh karena itu, model BLIP yang telah dikuantisasi akan diimplementasikan ke dalam sistem medis cerdas berbasis web agar mempercepat waktu inferensi pada saat proses inferensi berlangsung.
+
+
+
+\end{enumerate}
+
+
+\section{Saran}
+
+\par Berdasarkan kesimpulan yang telah dijelaskan sebelumnya, maka penulis memberikan saran untuk penelitian selanjutnya sebagai berikut:
+
+\begin{enumerate}
+
+    \item Mengimplementasikan metode \textit{embedding} yang lainya seperti \textit{word2vec} atau \textit{fastText} pada model VGG19-LSTM untuk melihat apakah performa model tersebut dapat ditingkatkan.
+
+    \item Melakukan eksperimen dengan menggunakan \textit{pre-trained} model lainya dengan basis \textit{transformer} seperti \textit{Vision Language Transformers} (ViLT), \textit{Vision-and-Language BERT} (ViLBERT), \textit{Learning Cross-Modality Encoder Representations from Transformers} (LXMERT), dan lain-lain pada tugas VQA.
+
+    \item Menerapkan teknik augmentasi data VQA yang lebih kompleks dengan mengimplementasikan model generatif untuk menciptakan gambar dan pertanyaan baru, Sehingga berkemungkinan dapat meningkatkan performa model VQA.    
+
+\end{enumerate}
+
+
+
+%-----------------------------------------------------------------------------%
+
+% Baris ini digunakan untuk membantu dalam melakukan sitasi
+% Karena diapit dengan comment, maka baris ini akan diabaikan
+% oleh compiler LaTeX.
+\begin{comment}
+\bibliography{daftar-pustaka}
+\end{comment}

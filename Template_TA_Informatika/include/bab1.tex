@@ -1,0 +1,58 @@
+% \fancyhf{} 
+% \fancyfoot[C]{\thepage}
+
+
+\chapter{PENDAHULUAN}
+% \thispagestyle{plain} % Halaman pertama bab menggunakan gaya plain
+
+
+\section{Latar Belakang}
+
+\par Citra medis, seperti \textit{Magnetic Resonance Imaging} (MRI), \textit{X-Ray}, \textit{Ultrasonography} (USG), \textit{Endoscopy}, \textit{Computed Tomography} (CT-Scan), \textit{Nuclear Medicine}, dan lain-lain, menjadi fokus penelitian utama dalam dunia medis \citep{kusuma2020penerapan}. Profesional medis menggunakan berbagai teknik untuk mendeteksi dan menganalisis penyakit pada pasien. Dua cabang ilmu yang berkaitan dengan diagnosa penyakit, yaitu patologi dan radiologi, memainkan peran krusial dalam memahami citra medis \citep{sorace2012integrating}. Meskipun demikian, kesalahan analisis citra medis oleh tenaga medis terkadang bisa saja terjadi karena sifat manusia yang rentan terhadap kesalahan \citep{mauli2018tanggung}. 
+
+
+\par Ketika manusia melakukan pekerjaan yang repetitif, ini dapat menyebabkan kelelahan dan berkurangnya konsentrasi, sehingga meningkatkan kemungkinan kesalahan. Hal ini berbeda dengan \textit{Artificial Intelligence} (AI), AI tidak memiliki perasaan, sehingga AI akan tetap menghasilkan kualitas pekerjaan yang konsisten seiring berjalannya waktu \citep{fernando2019studi}. Pada bidang medis AI tidak diharapkan untuk menggantikan dokter manusia dalam skala besar. Sebaliknya, AI kemungkinan akan memberdayakan praktik kedokteran dengan meningkatkan upaya dokter dan mengatasi masalah seperti kelelahan dokter \citep{basu2020artificial}. Oleh sebab itu, dibutuhkan sebuah sistem yang dapat membantu tenaga medis dalam menjawab permasalahan yang terdapat pada citra medis. Salah satu solusi yang dapat digunakan adalah dengan membangun sistem \textit{Visual Question Answering} (VQA). Dalam konteks medis VQA dapat memberikan manfaat bagi dokter dan pasien yang mana dokter bisa memperoleh jawaban yang diperoleh dari sistem VQA sebagai bentuk dalam pengambilan keputusan. Sedangkan pasien bisa mengajukan pertanyaan ke sistem VQA dengan gambar medis yang ada pada dirinya untuk mengetahui kondisi kesehatanya \citep{aioz_mevf_miccai19}.
+
+\par Sistem VQA medis ini juga dapat berperan sebagai asisten yang memiliki pengetahuan yang luas. Sebagai contoh, pendapat tambahan atau opini kedua dari sistem VQA dapat membantu tenaga medis dalam menjawab pertanyaan berdasarkan citra medis yang diberikan dan mengurangi potensi kesalahan dalam diagnosis pada saat bersamaan \citep{tschandl2020human}. Meskipun begitu, penelitian mengenai sistem VQA medis masih terbatas karena menghadapi beberapa tantangan khusus yang harus dihadapi, seperti keanekaragaman pertanyaan yang dapat diajukan, yang memerlukan pemahaman yang mendalam tentang citra medis dan pertanyaan untuk konteks medis, serta memiliki keterbatasan dalam interpretabilitas yakni kemampuan untuk menanyakan model tentang wilayah gambar yang spesifik \citep{lin2023medical}. Akan tetapi, dengan sering dilakukannya penelitian terkait \textit{medical visual question answering}, diharapkan dapat mengatasi tantangan yang ada, sehingga penelitian \textit{medical visual question answering} dapat berkembang dengan baik seiring berjalannya waktu.
+
+\par Penelitian ini bertujuan untuk mengembangkan sebuah sistem VQA yang mampu memberikan jawaban terhadap pertanyaan yang diajukan berdasarkan citra medis. Sistem ini akan memanfaatkan dua \textit{dataset} yaitu PathVQA yang terkait dengan patologi, dan VQA-RAD yang fokus pada bidang radiologi. Dalam penelitian ini akan menggunakan pendekatan \textit{deep learning} yang memanfaatkan teknik \textit{transfer learning}. Teknik \textit{transfer learning} ini digunakan untuk memanfaatkan model yang sudah dilatih sebelumnya pada \textit{dataset} yang berbeda. Hasil dari penelitian ini diharapkan dapat memberikan gambaran mengenai sistem VQA untuk citra medis dengan \textit{deep learning} dan memberikan kontribusi terkait penelitian \textit{medical visual question answering}.
+
+\section{Rumusan Masalah}
+Berdasarkan latar belakang yang telah diuraikan, permasalahan dalam penelitian ini dapat dirumuskan sebagai berikut:
+\begin{enumerate}
+
+	\item{Bagaimana membangun model VQA menggunakan citra medis dengan menerapkan teknik \textit{transfer learning}?}
+
+	\item{Bagaimana membandingkan performa model VQA pada arsitektur VGG19-LSTM dan BLIP untuk \textit{dataset} PathVQA dan VQA-RAD?}
+
+    \item{Bagaimana menerapkan model VQA terbaik untuk menjawab pertanyaan berdasarkan citra medis?}
+
+\end{enumerate}
+
+\section{Tujuan Penelitian}
+Adapun maksud dan tujuan dari penelitian ini adalah sebagai berikut:
+
+\begin{enumerate}
+	
+	\item{Membangun model VQA menggunakan citra medis dengan menerapkan teknik \textit{transfer learning}.}
+
+	\item{Membandingkan performa model VQA pada arsitektur VGG19-LSTM dan BLIP, dengan \textit{dataset} PathVQA dan VQA-RAD.}
+
+	\item{Mengimplementasikan model VQA terbaik untuk menjawab pertanyaan berdasarkan citra medis.}
+
+\end{enumerate}
+
+\section{Manfaat Penelitian}
+\par Manfaat yang diinginkan dari penelitian ini adalah untuk memberikan gambaran mengenai sistem VQA untuk citra medis dengan \textit{deep learning}. Selanjutnya, memberikan pengetahuan hasil implementasi dengan arsitektur VGG19-LSTM dan BLIP dalam mengembangkan sistem VQA pada citra medis. Lalu yang terakhir, memberikan kontribusi terkait penelitian \textit{medical visual question answering}. 
+
+% \end{enumerate}
+
+
+
+
+% Baris ini digunakan untuk membantu dalam melakukan sitasi
+% Karena diapit dengan comment, maka baris ini akan diabaikan
+% oleh compiler LaTeX.
+\begin{comment}
+\bibliography{daftar-pustaka}
+\end{comment}
